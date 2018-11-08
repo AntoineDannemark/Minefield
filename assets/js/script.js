@@ -50,7 +50,7 @@ document.getElementById("new").addEventListener("click", function () {
             bombed.push(bCoord);
 
             //Init neighbours var + array
-            
+           /* 
             var xBombM = undefined;
             var xBombP = undefined;
             var yBombM = undefined;
@@ -125,7 +125,7 @@ document.getElementById("new").addEventListener("click", function () {
                 nArray.push(nObj);
             }
 
-
+*/
 
             //Research and (destroy) set "X" value in grid
             document.getElementById(bCoord).innerHTML = "X";
@@ -139,21 +139,196 @@ document.getElementById("new").addEventListener("click", function () {
         n++;   
     };
 
-    console.log(bCoord);
-    console.log(nArray);
+
+    // ADD POINTS IN CLEAR CELLS
+
+    // Scan x,y 
+    var xCoord = 0, yCoord = 0;
+        for (xCoord = 0; xCoord < 16; xCoord++) {
+            for (yCoord = 0; yCoord < 16; yCoord++) {
+
+                //If no bomb, calculate points
+                if(document.getElementById(xCoord + "," + yCoord).innerHTML !== "X") {
+
+                   //Calculate how many bombs around
+
+                        //Init neighbours var + array                 
+                             
+                        var xMinus = xCoord - 1;
+                        //console.log(xM);
+                        var xPlus = xCoord + 1;
+                        var yMinus = yCoord - 1;
+                        var yPlus = yCoord + 1;
+                        var score = 0;
+                        var nCoord;
+                                 
+                        if (xMinus >= 0) {
+                            var xM = xMinus;
+                            //console.log(xMinus);
+                        } //else {console.log('err1')}; 
+                        
+                        if (xPlus < 16) {
+                            var xP = xPlus;
+                            //console.log(xPlus);
+                        } //else {console.log('err2')}; 
+                        
+                        if (yMinus >= 0) {
+                            var yM = yMinus;
+                            //console.log(yMinus);
+                        } //else {console.log('err3')}; 
+                       
+                        if (yPlus < 16) {
+                            var yP = yPlus; 
+                            //console.log(yPlus);
+                        } //else {console.log('err4')};
+                        
+                        
+
+                        if(xM){
+                            nCoord = xM + "," + yCoord                      
+                            if(document.getElementById(nCoord).innerHTML =="X"){
+                                score += 1;
+                            }
+                        }
+
+                        if(xM && yM) {
+                            nCoord = xM + "," + yM;                        
+                            if(document.getElementById(nCoord).innerHTML =="X"){
+                                score += 1;
+                            }   
+                        }       
+                        
+                        if (xM && yP) {
+                            nCoord = xM + "," + yP;                        
+                            if(document.getElementById(nCoord).innerHTML =="X"){
+                                score += 1;
+                            }
+                        }
+
+                        if (xP) {
+                            nCoord = xP + "," + yCoord;                        
+                            if(document.getElementById(nCoord).innerHTML =="X"){
+                                score += 1;
+                            }
+                        }
+
+                        if (xP && yP) {
+                            nCoord = xP + "," + yP;                        
+                            if(document.getElementById(nCoord).innerHTML =="X"){
+                                score += 1;
+                            }
+                        }
+
+                        if (xP && yM) {
+                            nCoord = xP + "," + yM;                        
+                            if(document.getElementById(nCoord).innerHTML =="X"){
+                                score += 1;
+                        
+                            }
+                        }                        
+                        
+                        if (yP) {
+                            nCoord = xCoord + "," + yP;
+                            if(document.getElementById(nCoord).innerHTML =="X"){
+                                score += 1;
+                            }
+                        }
+
+                        if (yM) {
+                            nCoord = xCoord + "," + yM;
+                            if(document.getElementById(nCoord).innerHTML =="X"){
+                                score += 1;
+                            }
+                        }
+
+                        document.getElementById(xCoord + "," + yCoord).innerHTML = score;
+                        //var nObj;
 
 
-    //Splits bombed array to [x, y, x, y, etc.]
+                    //console.log(typeof xM);
+                    //console.log(xP);
+                    //console.log(yM);
+                    //console.log(yP);
+
+                        /*    
+                        nCoord = xM + "," + yCoord;
+                        var nObj = {coord: nCoord, value: 0};
+                        nArray.push(nObj);
+                   
+                        nCoord = xM + "," + yM;
+                        nObj = {coord: nCoord, value: 0};
+                        nArray.push(nObj);
+              
+                        nCoord = xM + "," + yP;
+                        nObj = {coord: nCoord, value: 0};
+                        nArray.push(nObj);
+               
+                        nCoord = xP + "," + yCoord;
+                        nObj = {coord: nCoord, value: 0};
+                        nArray.push(nObj);
+                   
+                        nCoord = xP + "," + yP;
+                        nObj = {coord: nCoord, value: 0};
+                        nArray.push(nObj);
+                  
+                        nCoord = xP + "," + yM;
+                        nObj = {coord: nCoord, value: 0};
+                        nArray.push(nObj);
+                   
+                        nCoord = xCoord + "," + yP;
+                        nObj = {coord: nCoord, value: 0};
+                        nArray.push(nObj);
+                 
+                        nCoord = xCoord + "," + yM;
+                        nObj = {coord: nCoord, value: 0};
+                        nArray.push(nObj);
+
+                        console.log(nArray);
+                        */
 
 
-    //Add points to neighbour cells
-    /*for (var i = 0; i < 65; i++) {
-        bombed[i]
-    } */   
+                       /* if (xM >= 0) {
+                            var xMinus = xM;
+                            //console.log(xMinus);
+                        } //else {console.log('err1')}; 
+                        
+                        if (xP < 16) {
+                            var xPlus = xP;
+                            //console.log(xPlus);
+                        } //else {console.log('err2')}; 
+                        
+                        if (yM >= 0) {
+                            var yMinus = yM;
+                            //console.log(yMinus);
+                        } //else {console.log('err3')}; 
+                       
+                        if (yP < 16) {
+                            var yPlus = yP; 
+                            //console.log(yPlus);
+                        } //else {console.log('err4')};
+                        
+                        //console.log("yo" + yPlus);
+                        //console.log("ya" + xMinus);
+                        */
+
+
+                }; // else do nothing
+
+
+    
 
 
 
 
+
+
+
+
+        };
+    };
+
+
+    
 
 
 
