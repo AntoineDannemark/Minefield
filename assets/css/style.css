@@ -1,0 +1,47 @@
+.game {
+    margin: 50px auto;
+    width: 600px;
+    height: 600px;
+    background-color: pink;
+
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-rows: repeat(16, 1fr);
+    grid-gap: 5px;
+    border: 1px solid black;
+
+}
+
+.slot {
+    /*display: block;*/
+    width: auto;
+    height: auto;
+    background-color: rgb(148, 144, 144);
+    border: 1px solid black;
+    text-align: center;
+}
+
+header {
+    height: 100px;
+    background-color: pink;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-left: 400px;
+    padding-right: 400px;
+}
+
+
+#new {
+    align-self: center;
+}
+
+.cnt {
+    align-self: center;
+    border: solid black 1px;
+}
+
+h2 {
+    
+}
