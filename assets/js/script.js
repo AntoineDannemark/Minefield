@@ -18,9 +18,9 @@ document.getElementById("new").addEventListener("click", function () {
 
     //Loop Reset Grid
         //Loop through X
-        for (var xCoord = 0; xCoord < 16; xCoord++) {
+        for (var yCoord = 0; yCoord < 16; yCoord++) {
             //Loop through Y
-            for (var yCoord = 0; yCoord < 16; yCoord++) {
+            for (var xCoord = 0; xCoord < 16; xCoord++) {
                 //Format value
                 var allCoord = xCoord + "," + yCoord;
                 //Reset
@@ -143,8 +143,8 @@ document.getElementById("new").addEventListener("click", function () {
     // ADD POINTS IN CLEAR CELLS
 
     // Scan x,y 
-        for (xCoord = 0; xCoord < 16; xCoord++) {
-            for (yCoord = 0; yCoord < 16; yCoord++) {
+        for (yCoord = 0; yCoord < 16; yCoord++) {
+            for (xCoord = 0; xCoord < 16; xCoord++) {
 
                 //If no bomb, calculate points
                 if(document.getElementById(xCoord + "," + yCoord).innerHTML != "X") {
