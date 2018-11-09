@@ -115,9 +115,9 @@ document.getElementById("new").addEventListener("click", function() {
 
 
      //Determine bombQty
-    if(diff == "easy") {var diffRatio = 0.1} 
-    else if (diff == "medium") {var diffRatio = 0.2}
-    else {var diffRatio = 0.3}
+    if(diff == "easy") {var diffRatio = 0.05} 
+    else if (diff == "medium") {var diffRatio = 0.1}
+    else {var diffRatio = 0.2}
     var bombQty = Math.floor(diffRatio*(cells))
     document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
     document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
