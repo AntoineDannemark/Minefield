@@ -1,10 +1,7 @@
 #game {
     margin: 50px auto;
-    width: auto;
-    height: auto;
     background-color: pink;
     display: grid;
-    border: 1px solid black;
 }
 
 .slot {
@@ -26,7 +23,6 @@ header {
     padding-left: 400px;
     padding-right: 400px;
 }
-
 
 #new {
     align-self: center;

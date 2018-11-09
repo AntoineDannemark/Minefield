@@ -30,10 +30,13 @@
 document.getElementById("new").addEventListener("click", function () {
 
     //Ask grid size 
-    var cols = 14; //prompt('Set colums qty');
-    var rows = 14; //prompt('Set rows qty');
+    var cols = prompt('Set colums qty');
+    var rows = prompt('Set rows qty');
     var cells = cols*rows;
     
+    //Reset old grid
+    document.getElementById("game").innerHTML = "";
+
     //Inject grid    
     for(var yC = 0; yC < rows; yC++) {
         for (var xC = 0; xC < cols; xC++) {    
@@ -42,11 +45,14 @@ document.getElementById("new").addEventListener("click", function () {
     };    
 
     //Set grid CSS (cols + rows)
-    var style = "grid-template-columns: repeat(" + cols + ", 1fr); grid-template-rows: repeat(" + rows +", 1fr)";
+    var width = cols * 20;
+    var height = rows * 20;
+    var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", 1fr); grid-template-rows: repeat(" + rows +", 1fr)";
     document.getElementById("game").setAttribute("style", style);
 
-    //Ask difficulty level
-    var diff = "easy";
+
+    //Ask difficulty level 
+    var diff = prompt("Chose difficulty level: easy, medium, hard");
 
 
 
