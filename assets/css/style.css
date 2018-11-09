@@ -1,6 +1,13 @@
 #game {
-    margin: 50px auto;
+    width: 1200px;
+    height: 800px;
+    margin: auto;
     display: grid;
+    padding: 20px;
+    background-color:blue;
+    align-items: center;
+
+
 }
 
 #level {
@@ -8,23 +15,38 @@
 }
 
 .slot {
-    /*display: block;*/
-    width: 20px;
-    height: 20px;
-    background-color: rgb(148, 144, 144);
+    width: 1em;
+    height: 1em;
+    padding: 3px;
+    background-image: radial-gradient(circle at center, white, grey);
+    color: white;
+    font-weight: bold;
     border: 1px solid black;
-    text-align: center;
+    text-align: center; 
+}
+
+.slot p {
+    color: red;
+    display: none;
 }
 
 header {
-    height: 100px;
+    height: 200px;
     background-color: pink;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding-left: 400px;
-    padding-right: 400px;
+    justify-content: space-evenly;
+
+}
+
+#level { 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#level .btn {
+    margin: 0px 20px 0px 20px;
 }
 
 #new {
@@ -34,10 +56,8 @@ header {
 .cnt {
     align-self: center;
     border: solid black 1px;
-}
-
-.cnt {
-    color: red;
+    width: 100px;
+    height: 100px;
     text-align: center;
     padding: 10px;
     margin: 0px;

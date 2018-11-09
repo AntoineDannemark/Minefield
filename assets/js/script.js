@@ -41,7 +41,7 @@ document.getElementById("new").addEventListener("click", function() {
         //Ask difficulty level 
         function askLevel() {
 
-            document.getElementById("level").innerHTML = "<button style='width: 200px' id='easy'> - - EASY - - <br/>Don't push me too hard!</button><button style='width: 200px' id='medium'> - - MEDIUM - - <br/>I'm average shit</button><button style='width: 200px' id='hard'> - - HARD - - <br/>Do me hardcore!</button>";                        
+            document.getElementById("level").innerHTML = "<button class='btn' style='width: 200px' id='easy'> - - EASY - - <br/>Don't push me too hard!</button><button class='btn' style='width: 200px' id='medium'> - - MEDIUM - - <br/>I'm average shit</button><button class='btn' style='width: 200px' id='hard'> - - HARD - - <br/>Do me hardcore!</button>";                        
 
             document.getElementById("easy").addEventListener("click", function() {
                 if(confirm("Difficulty level: EASY\nYou little coward baby!\nStill time to change your mind little pussy!")) {
@@ -71,12 +71,34 @@ document.getElementById("new").addEventListener("click", function() {
 
         function injectGrid() {
 
-    //Inject grid    
+    //Inject grid 
+    
+    var iCoord;
+    
     for(var yC = 0; yC < rows; yC++) {
-        for (var xC = 0; xC < cols; xC++) {    
-            document.getElementById("game").innerHTML += "<div class='slot' id='" + xC + "," + yC + "'></div>";
-        };
+        for (var xC = 0; xC < cols; xC++) {
+            iCoord = xC + "," + yC;     
+            document.getElementById("game").innerHTML += "<div class='slot' id='" + iCoord + "'></div>";
+        };        
     };    
+    
+    for(yC = 0; yC < rows; yC++) {
+        for (xC = 0; xC < cols; xC++) {
+            iCoord = xC + "," + yC;
+            document.getElementById(iCoord).addEventListener("click", function() {       
+                var pCoord = String(iCoord);
+                console.log('click' + pCoord);
+                document.getElementById(pCoord).style.color = "black";
+            });                       
+        };
+    };
+    
+//    document.getElementById(iCoord).addEventListener("click", function() {
+ //       console.log('click' + iCoord);
+   //     document.getElementById(iCoord).style.color = "black"
+
+    
+
 
     //Set grid CSS (cols + rows)
     var width = cols * 20;
@@ -84,11 +106,13 @@ document.getElementById("new").addEventListener("click", function() {
     var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", 1fr); grid-template-rows: repeat(" + rows +", 1fr)";
     document.getElementById("game").setAttribute("style", style);
 
-    //Determine bombQty
+
+     //Determine bombQty
     if(diff == "easy") {var diffRatio = 0.1} 
     else if (diff == "medium") {var diffRatio = 0.2}
     else {var diffRatio = 0.3}
     var bombQty = Math.floor(diffRatio*(cells))
+    document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
     document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
 
     //Init BOMBED array + counter
@@ -108,6 +132,8 @@ document.getElementById("new").addEventListener("click", function() {
             bombed.push(bCoord);
             //Set "X" value in grid
             document.getElementById(bCoord).innerHTML = "X";
+
+            
         } else {            
             //Round + 1 if no bomb set
             n--;
@@ -212,4 +238,8 @@ askLevel();
 
 });
 
+
+
+
+ 
 
