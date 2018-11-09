@@ -143,12 +143,11 @@ document.getElementById("new").addEventListener("click", function () {
     // ADD POINTS IN CLEAR CELLS
 
     // Scan x,y 
-    var xCoord = 0, yCoord = 0;
         for (xCoord = 0; xCoord < 16; xCoord++) {
             for (yCoord = 0; yCoord < 16; yCoord++) {
 
                 //If no bomb, calculate points
-                if(document.getElementById(xCoord + "," + yCoord).innerHTML !== "X") {
+                if(document.getElementById(xCoord + "," + yCoord).innerHTML != "X") {
 
                    //Calculate how many bombs around
 
@@ -160,6 +159,7 @@ document.getElementById("new").addEventListener("click", function () {
                         var yMinus = yCoord - 1;
                         var yPlus = yCoord + 1;
                         var score = 0;
+                        document.getElementById(xCoord + "," + yCoord).innerHTML = 0;
                         var nCoord;
                                  
                         if (xMinus >= 0) {
@@ -184,64 +184,75 @@ document.getElementById("new").addEventListener("click", function () {
                         
                         
 
-                        if(xM){
-                            nCoord = xM + "," + yCoord                      
+                        if(xM) {
+                            nCoord = xM + "," + yCoord;                      
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                            }
-                        }
+                                console.log("                            1_" + xCoord + "," + yCoord + score + " from " + nCoord)
+                            };
+                        };
 
                         if(xM && yM) {
                             nCoord = xM + "," + yM;                        
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                            }   
-                        }       
+                                console.log("                            2_" + xCoord + "," + yCoord + " " + score + " from " + nCoord)
+                            }; 
+                        };       
                         
                         if (xM && yP) {
                             nCoord = xM + "," + yP;                        
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                            }
-                        }
+                                console.log("                            3_" + xCoord + "," + yCoord + " " + score + " from " + nCoord)
+                            };
+                        };
 
                         if (xP) {
                             nCoord = xP + "," + yCoord;                        
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                            }
-                        }
+                                console.log("                            4_" + xCoord + "," + yCoord + " " + score + " from " + nCoord)
+                            };
+                        };
 
                         if (xP && yP) {
                             nCoord = xP + "," + yP;                        
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                            }
-                        }
+                                console.log("                            5_" + xCoord + "," + yCoord + " " + score + " from " + nCoord)
+                            };
+                        };
 
                         if (xP && yM) {
                             nCoord = xP + "," + yM;                        
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                        
-                            }
-                        }                        
+                                console.log("                            6_" + xCoord + "," + yCoord + " " + score + " from " + nCoord)
+                            };
+                        };                   
                         
                         if (yP) {
                             nCoord = xCoord + "," + yP;
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                            }
-                        }
+                                console.log("                            7_" + xCoord + "," + yCoord + " " + score + " from " + nCoord)
+                            };
+                        };
 
                         if (yM) {
                             nCoord = xCoord + "," + yM;
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                            }
-                        }
+                                console.log("                            8_" + xCoord + "," + yCoord + " " + score + " from " + nCoord)
+                            };
+
+                       
+                        
+                    };
 
                         document.getElementById(xCoord + "," + yCoord).innerHTML = score;
+                        console.log("       " + xCoord + "," + yCoord + " scored total " + score);
                         //var nObj;
 
 
