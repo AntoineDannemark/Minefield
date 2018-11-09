@@ -18,12 +18,19 @@
     width: 1em;
     height: 1em;
     padding: 3px;
-    background-image: radial-gradient(circle at center, white 35%, grey);
+    background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
     background-color: rgb(165, 164, 164);
-    color: white;
+    color: rgb(187, 178, 178);
     font-weight: bold;
-    border: 1px solid black;
+    border: 1px solid rgb(73, 73, 73);
     text-align: center; 
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 
 .slot p {
