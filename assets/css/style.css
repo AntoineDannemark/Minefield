@@ -1,5 +1,9 @@
 body {
-    background-image: url("assets/img/bg.jpg");
+    background-attachment: fixed;
+    background-image: url("../img/bg.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat; 
+
 }
 
 #game {
@@ -8,6 +12,7 @@ body {
     margin: auto;
     display: grid;
     align-items: center;
+    position: relative;
 }
 
 #level {
@@ -15,9 +20,8 @@ body {
 }
 
 .slot {
-    width: 1em;
-    height: 1em;
-    padding: 3px;
+    width: 40px;
+    height: 40px;
     background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
     background-color: rgb(165, 164, 164);
     color: rgb(187, 178, 178);
@@ -38,13 +42,16 @@ body {
     display: none;
 }
 
-header {
-    height: 200px;
+nav {
+    position: absolute;
+    height: 600px;
+    width: 300px;
     background-color: pink;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
-
+    float: left;
+    margin: 200px;
 }
 
 #level { 

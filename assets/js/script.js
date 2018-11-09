@@ -80,6 +80,8 @@ document.getElementById("new").addEventListener("click", function() {
     //Inject grid 
     
     var iCoord;
+    var rClick = 0;    
+
     
     for(var yC = 0; yC < rows; yC++) {
         for (var xC = 0; xC < cols; xC++) {
@@ -98,19 +100,31 @@ document.getElementById("new").addEventListener("click", function() {
                     document.getElementById(xCoord).style.background = "grey";
                     });
                 document.getElementById(xCoord).addEventListener('contextmenu', function() {
-                    document.getElementById(xCoord).style.background = "pink";
-                    document.getElementById(xCoord).style.color = "pink";
-                    return false;
-                }); 
+ 
+                    (function() { 
+                           
+                        if (rClick % 2 == 0) {
+                            document.getElementById(xCoord).style.background = "pink";
+                            document.getElementById(xCoord).style.color = "pink";
+                        } else {
+                            document.getElementById(xCoord).style.backgroundImage = "radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey)";
+                            document.getElementById(xCoord).style.color = "rgb(165, 164, 164)";
+                        }
+                        console.log(rClick);
+                        rClick += 1;
+                        console.log(rClick);
+                        return false;
+                        })();
+                });                 
             })();                       
         };
     }; 
 
 
     //Set grid CSS (cols + rows)
-    var width = cols * 20;
-    var height = rows * 20;
-    var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", minmax(20px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(20px, 1fr))";
+    var width = cols * 40;
+    var height = rows * 40;
+    var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", minmax(40px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(40px, 1fr))";
     document.getElementById("game").setAttribute("style", style);
 
 
