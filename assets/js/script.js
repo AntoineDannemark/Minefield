@@ -29,11 +29,39 @@
 //launch @ click "new game"
 document.getElementById("new").addEventListener("click", function () {
 
+    //Ask grid size 
+    var cols = 14; //prompt('Set colums qty');
+    var rows = 14; //prompt('Set rows qty');
+    var cells = cols*rows;
+    
+    //Inject grid    
+    for(var yC = 0; yC < rows; yC++) {
+        for (var xC = 0; xC < cols; xC++) {    
+            document.getElementById("game").innerHTML += "<div class='slot' id='" + xC + "," + yC + "'></div>";
+        };
+    };    
+
+    //Set grid CSS (cols + rows)
+    var style = "grid-template-columns: repeat(" + cols + ", 1fr); grid-template-rows: repeat(" + rows +", 1fr)";
+    document.getElementById("game").setAttribute("style", style);
+
+    //Ask difficulty level
+    var diff = "easy";
+
+
+
+    //Determine bombQty
+    if(diff == "easy") {var diffRatio = 0.1} 
+    else if (diff == "medium") {var diffRatio = 0.2}
+    else {var diffRatio = 0.3}
+    var bombQty = Math.floor(diffRatio*(cells))
+    console.log(bombQty);
+
     //Loop Reset Grid
         //Loop through Y
-        for (var yCoord = 0; yCoord < 16; yCoord++) {
+        for (var yCoord = 0; yCoord < rows; yCoord++) {
             //Loop through X
-            for (var xCoord = 0; xCoord < 16; xCoord++) {
+            for (var xCoord = 0; xCoord < cols; xCoord++) {
                 //Format value
                 var allCoord = xCoord + "," + yCoord;
                 //Reset
@@ -45,11 +73,11 @@ document.getElementById("new").addEventListener("click", function () {
     var bombed = [];
     var n = 0;
 
-    //Loop set 65 BOMBS!!       
-    while (n < 65) {
+    //Loop set BOMBS!!       
+    while (n < bombQty) {
         //Calculate x + y
-        var xBomb = Math.floor(Math.random() * 16);
-        var yBomb = Math.floor(Math.random() * 16);
+        var xBomb = Math.floor(Math.random() * cols);
+        var yBomb = Math.floor(Math.random() * rows);
         //Format value
         var bCoord = xBomb + "," + yBomb;
         //Check not bombed already
@@ -69,8 +97,8 @@ document.getElementById("new").addEventListener("click", function () {
 
     //Add points in clear cells
         // Scan x,y 
-        for (yCoord = 0; yCoord < 16; yCoord++) {
-            for (xCoord = 0; xCoord < 16; xCoord++) {
+        for (yCoord = 0; yCoord < rows; yCoord++) {
+            for (xCoord = 0; xCoord < cols; xCoord++) {
                 //If no bomb, calculate points
                 if(document.getElementById(xCoord + "," + yCoord).innerHTML != "X") {
                    //Calculate how many bombs around
@@ -88,9 +116,9 @@ document.getElementById("new").addEventListener("click", function () {
                     var yM = 'undefined';
                     var yP = 'undefined';                    
                     if (xMinus >= 0) {var xM = xMinus;}                         
-                    if (xPlus < 16) {var xP = xPlus;}                         
+                    if (xPlus < cols) {var xP = xPlus;}                         
                     if (yMinus >= 0) {var yM = yMinus;}                        
-                    if (yPlus < 16) {var yP = yPlus;} 
+                    if (yPlus < rows) {var yP = yPlus;} 
                         
                     //Add points to score
                     if(xM !== "undefined") {
@@ -152,46 +180,7 @@ document.getElementById("new").addEventListener("click", function () {
                     //write score in cell
                     document.getElementById(xCoord + "," + yCoord).innerHTML = score;
                 }; 
-
-
-    
-
-
-
-
-
-
-
-
+            };
         };
-    };
-
-
-    
-
-
-
-
-
-        
-        
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
 });
+
