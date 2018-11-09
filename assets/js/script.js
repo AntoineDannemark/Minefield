@@ -84,19 +84,26 @@ document.getElementById("new").addEventListener("click", function() {
     
     for(yC = 0; yC < rows; yC++) {
         for (xC = 0; xC < cols; xC++) {
-            iCoord = xC + "," + yC;
-            document.getElementById(iCoord).addEventListener("click", function() {       
-                var pCoord = String(iCoord);
-                console.log('click' + pCoord);
-                document.getElementById(pCoord).style.color = "black";
-            });                       
+            (function() {            
+                var xCoord = xC + "," + yC;
+                document.getElementById(xCoord).addEventListener("click", function() {                          
+                    console.log('click' + xCoord);
+                    document.getElementById(xCoord).style.color = "black";
+                    document.getElementById(xCoord).style.background = "grey";
+                    });
+            })();                       
         };
     };
     
 //    document.getElementById(iCoord).addEventListener("click", function() {
  //       console.log('click' + iCoord);
    //     document.getElementById(iCoord).style.color = "black"
-
+    document.getElementById("0,0").addEventListener("click", function() {       
+        var pCoord = String(iCoord);
+        console.log('click' + pCoord);
+        document.getElementById(pCoord).style.color = "black";
+        document.getElementById(pCoord).style.background = "grey";
+});  
     
 
 

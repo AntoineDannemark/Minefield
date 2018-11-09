@@ -18,7 +18,8 @@
     width: 1em;
     height: 1em;
     padding: 3px;
-    background-image: radial-gradient(circle at center, white, grey);
+    background-image: radial-gradient(circle at center, white 35%, grey);
+    background-color: rgb(165, 164, 164);
     color: white;
     font-weight: bold;
     border: 1px solid black;
