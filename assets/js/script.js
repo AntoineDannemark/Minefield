@@ -110,7 +110,7 @@ document.getElementById("new").addEventListener("click", function() {
     //Set grid CSS (cols + rows)
     var width = cols * 20;
     var height = rows * 20;
-    var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", 1fr); grid-template-rows: repeat(" + rows +", 1fr)";
+    var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", minmax(20px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(20px, 1fr))";
     document.getElementById("game").setAttribute("style", style);
 
 

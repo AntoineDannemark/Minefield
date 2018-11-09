@@ -1,13 +1,15 @@
+body {
+    width: 100%;
+    height: 100%;
+    background-image: url("assets/img/bg.jpg");
+}
+
 #game {
     width: 1200px;
     height: 800px;
     margin: auto;
     display: grid;
-    padding: 20px;
-    background-color:blue;
     align-items: center;
-
-
 }
 
 #level {
