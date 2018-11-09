@@ -1,4 +1,10 @@
-    // Double boucle for process x + y 
+window.onload = function() {
+    document.addEventListener("contextmenu", function(e){
+      e.preventDefault();
+    }, false);
+};
+   
+   // Double boucle for process x + y 
 
     /*  var yCoord = 0, yCoord = 0;
             for (yCoord = 0; yCoord < 16; yCoord++) {
@@ -91,20 +97,14 @@ document.getElementById("new").addEventListener("click", function() {
                     document.getElementById(xCoord).style.color = "black";
                     document.getElementById(xCoord).style.background = "grey";
                     });
+                document.getElementById(xCoord).addEventListener('contextmenu', function() {
+                    document.getElementById(xCoord).style.background = "pink";
+                    document.getElementById(xCoord).style.color = "pink";
+                    return false;
+                }); 
             })();                       
         };
-    };
-    
-//    document.getElementById(iCoord).addEventListener("click", function() {
- //       console.log('click' + iCoord);
-   //     document.getElementById(iCoord).style.color = "black"
-    document.getElementById("0,0").addEventListener("click", function() {       
-        var pCoord = String(iCoord);
-        console.log('click' + pCoord);
-        document.getElementById(pCoord).style.color = "black";
-        document.getElementById(pCoord).style.background = "grey";
-});  
-    
+    }; 
 
 
     //Set grid CSS (cols + rows)
