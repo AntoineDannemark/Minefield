@@ -89,7 +89,7 @@ document.getElementById("new").addEventListener("click", function() {
     else if (diff == "medium") {var diffRatio = 0.2}
     else {var diffRatio = 0.3}
     var bombQty = Math.floor(diffRatio*(cells))
-    console.log(bombQty);
+    document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
 
     //Init BOMBED array + counter
     var bombed = [];
