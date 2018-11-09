@@ -188,7 +188,7 @@ document.getElementById("new").addEventListener("click", function () {
                             nCoord = xM + "," + yCoord;                      
                             if(document.getElementById(nCoord).innerHTML =="X"){
                                 score += 1;
-                                console.log("                            1_" + xCoord + "," + yCoord + score + " from " + nCoord)
+                                console.log("                            1_" + xCoord + "," + yCoord + " " + score + " from " + nCoord)
                             };
                         };
 
@@ -251,7 +251,7 @@ document.getElementById("new").addEventListener("click", function () {
                         
                     };
 
-                        document.getElementById(xCoord + "," + yCoord).innerHTML = score;
+                        document.getElementById(xCoord + "," + yCoord).innerHTML = xCoord + "," + yCoord + " " + score;
                         console.log("       " + xCoord + "," + yCoord + " scored total " + score);
                         //var nObj;
 
