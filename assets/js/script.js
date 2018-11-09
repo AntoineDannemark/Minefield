@@ -27,15 +27,46 @@
 // 1. CHARGEMENT DE LA PARTIE
 
 //launch @ click "new game"
-document.getElementById("new").addEventListener("click", function () {
+document.getElementById("new").addEventListener("click", function() {
+
+    //Clear grid
+    document.getElementById("game").innerHTML = "";
 
     //Ask grid size 
     var cols = prompt('Set colums qty');
     var rows = prompt('Set rows qty');
     var cells = cols*rows;
-    
-    //Reset old grid
-    document.getElementById("game").innerHTML = "";
+    var diff;
+        
+        //Ask difficulty level 
+        function askLevel() {
+
+            document.getElementById("level").innerHTML = "<button style='width: 200px' id='easy'>Don't push me too hard!</button><button style='width: 200px' id='medium'>I'm average player</button><button style='width: 200px' id='hard'>Do me hardcore!</button>";                        
+
+            document.getElementById("easy").addEventListener("click", function() {
+                diff = "easy";
+                alert(diff + "? You little coward baby!");
+                document.getElementById("level").innerHTML = "";
+                injectGrid();
+            });
+            document.getElementById("medium").addEventListener("click", function() {
+                diff = "medium";
+                alert(diff + "? Are you scared ?");
+                document.getElementById("level").innerHTML = "";
+                injectGrid();
+            });
+            document.getElementById("hard").addEventListener("click", function() {
+                diff = "hard";
+                alert(diff + "? Kill it you crazy bastard!");
+                document.getElementById("level").innerHTML = "";
+                injectGrid();
+            });
+        };
+
+
+
+
+        function injectGrid() {
 
     //Inject grid    
     for(var yC = 0; yC < rows; yC++) {
@@ -50,30 +81,12 @@ document.getElementById("new").addEventListener("click", function () {
     var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", 1fr); grid-template-rows: repeat(" + rows +", 1fr)";
     document.getElementById("game").setAttribute("style", style);
 
-
-    //Ask difficulty level 
-    var diff = prompt("Chose difficulty level: easy, medium, hard");
-
-
-
     //Determine bombQty
     if(diff == "easy") {var diffRatio = 0.1} 
     else if (diff == "medium") {var diffRatio = 0.2}
     else {var diffRatio = 0.3}
     var bombQty = Math.floor(diffRatio*(cells))
     console.log(bombQty);
-
-    //Loop Reset Grid
-        //Loop through Y
-        for (var yCoord = 0; yCoord < rows; yCoord++) {
-            //Loop through X
-            for (var xCoord = 0; xCoord < cols; xCoord++) {
-                //Format value
-                var allCoord = xCoord + "," + yCoord;
-                //Reset
-                document.getElementById(allCoord).innerHTML = "";
-                };
-        };
 
     //Init BOMBED array + counter
     var bombed = [];
@@ -188,5 +201,12 @@ document.getElementById("new").addEventListener("click", function () {
                 }; 
             };
         };
+    };
+
+
+askLevel();
+
+
 });
+
 

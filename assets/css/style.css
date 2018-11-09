@@ -4,6 +4,10 @@
     display: grid;
 }
 
+#level {
+    height: 50px;
+}
+
 .slot {
     /*display: block;*/
     width: 20px;
