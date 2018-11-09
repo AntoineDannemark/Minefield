@@ -33,33 +33,36 @@ document.getElementById("new").addEventListener("click", function() {
     document.getElementById("game").innerHTML = "";
 
     //Ask grid size 
-    var cols = prompt('Set colums qty');
-    var rows = prompt('Set rows qty');
+    var cols = prompt('Set colums qty',16);
+    var rows = prompt('Set rows qty',16);
     var cells = cols*rows;
     var diff;
         
         //Ask difficulty level 
         function askLevel() {
 
-            document.getElementById("level").innerHTML = "<button style='width: 200px' id='easy'>Don't push me too hard!</button><button style='width: 200px' id='medium'>I'm average player</button><button style='width: 200px' id='hard'>Do me hardcore!</button>";                        
+            document.getElementById("level").innerHTML = "<button style='width: 200px' id='easy'> - - EASY - - <br/>Don't push me too hard!</button><button style='width: 200px' id='medium'> - - MEDIUM - - <br/>I'm average shit</button><button style='width: 200px' id='hard'> - - HARD - - <br/>Do me hardcore!</button>";                        
 
             document.getElementById("easy").addEventListener("click", function() {
-                diff = "easy";
-                alert(diff + "? You little coward baby!");
-                document.getElementById("level").innerHTML = "";
-                injectGrid();
+                if(confirm("Difficulty level: EASY\nYou little coward baby!\nStill time to change your mind little pussy!")) {
+                    diff = "easy";
+                    document.getElementById("level").innerHTML = "";
+                    injectGrid();
+                }
             });
             document.getElementById("medium").addEventListener("click", function() {
-                diff = "medium";
-                alert(diff + "? Are you scared ?");
-                document.getElementById("level").innerHTML = "";
-                injectGrid();
+                if(confirm("Difficulty level: MEDIUM\nAre you scared ?\nStill time to prove you're brave!\nClick CANCEL and select HARD !!")) {
+                    diff = "medium";
+                    document.getElementById("level").innerHTML = "";
+                    injectGrid();
+                }
             });
             document.getElementById("hard").addEventListener("click", function() {
-                diff = "hard";
-                alert(diff + "? Kill it you crazy bastard!");
-                document.getElementById("level").innerHTML = "";
-                injectGrid();
+                if(confirm("Difficulty level: HARD\nKill it you crazy bastard!")) {
+                    diff = "hard";
+                    document.getElementById("level").innerHTML = "";
+                    injectGrid();
+                }
             });
         };
 
