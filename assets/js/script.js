@@ -80,39 +80,54 @@ document.getElementById("new").addEventListener("click", function() {
     //Inject grid 
     
     var iCoord;
-    var rClick = 0;    
+    var rClick = 0;        
 
     
     for(var yC = 0; yC < rows; yC++) {
+        
         for (var xC = 0; xC < cols; xC++) {
+        
             iCoord = xC + "," + yC;     
+        
             document.getElementById("game").innerHTML += "<div class='slot' id='" + iCoord + "'></div>";
         };        
     };    
     
+
     for(yC = 0; yC < rows; yC++) {
+        
         for (xC = 0; xC < cols; xC++) {
+            
             (function() {            
+    
                 var xCoord = xC + "," + yC;
+    
                 document.getElementById(xCoord).addEventListener("click", function() {                          
                     console.log('click' + xCoord);
                     document.getElementById(xCoord).style.color = "black";
                     document.getElementById(xCoord).style.background = "grey";
                     });
+
                 document.getElementById(xCoord).addEventListener('contextmenu', function() {
  
                     (function() { 
-                           
-                        if (rClick % 2 == 0) {
+    
+                        var locClick = 0;
+                        console.log('from ' + xCoord + " " + locClick); 
+                        console.log(rClick); 
+                        locClick += rClick;
+                        console.log(locClick);    
+    
+                        if (locClick == 0) {
                             document.getElementById(xCoord).style.background = "pink";
                             document.getElementById(xCoord).style.color = "pink";
+                            rClick += 1
                         } else {
                             document.getElementById(xCoord).style.backgroundImage = "radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey)";
                             document.getElementById(xCoord).style.color = "rgb(165, 164, 164)";
+                            rClick += 1;
                         }
-                        console.log(rClick);
-                        rClick += 1;
-                        console.log(rClick);
+
                         return false;
                         })();
                 });                 

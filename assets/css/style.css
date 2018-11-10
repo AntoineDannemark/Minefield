@@ -12,7 +12,7 @@ body {
     margin: auto;
     display: grid;
     align-items: center;
-    position: relative;
+
 }
 
 #level {
@@ -43,7 +43,7 @@ body {
 }
 
 nav {
-    position: absolute;
+
     height: 600px;
     width: 300px;
     background-color: pink;
