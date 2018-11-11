@@ -20,7 +20,9 @@ body {
     margin: auto;
     display: grid;
     align-items: center;
+    justify-content: center;
     position: relative;
+    opacity: 0.9;
 }
 
 
@@ -30,34 +32,63 @@ body {
     width: 40px;
     height: 40px;
     border: 1px solid rgb(73, 73, 73);
+    border-radius: 10px;
     background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
     color: rgba(0, 0, 0, 0);
-    text-align: center; 
+
 }
 
 .S {
     width: 40px;
     height: 40px;
-    border: 1px solid rgb(73, 73, 73);
-    background-color: grey;
-    text-align: center; 
+    border: 1px solid rgb(61, 61, 61);;
+    border-radius: 10px;
+    background-image: radial-gradient(circle at center, rgb(94, 87, 87) 35%, rgb(90, 82, 82));
+    text-align: center;    
     font-weight: bold;
+    font-size: 30px;
 }
 
 .F {
     width: 40px;
     height: 40px;
     border: 1px solid rgb(73, 73, 73);
+    border-radius: 10px;
     background-image: radial-gradient(circle at center, red 5%, grey );
     color: rgba(0, 0, 0, 0);
+    z-index: 0;
 }
 
 .Q {
     width: 40px;
     height: 40px;
     border: 1px solid rgb(73, 73, 73);
-    background-image: radial-gradient(circle at center, yellow 5%, grey);
+    border-radius: 10px;
+    background-image: radial-gradient(circle at center, orange 5%, grey );
+    color: black;
+    text-align: center; 
+    font-weight: bold;
+    font-size: 30px;
+
+}
+
+/*.X1 {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(73, 73, 73);
+    border-radius: 10px;
+    background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
+
+}*/
+
+.X2 {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(73, 73, 73);
+    border-radius: 10px;
+    background-image: radial-gradient(circle at center, black, red);
     color: rgba(0, 0, 0, 0);
+
 }
 
 nav {
@@ -67,7 +98,7 @@ nav {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    float: left;
+    float: right;
     margin: o;
 }
 

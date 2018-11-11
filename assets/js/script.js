@@ -46,6 +46,11 @@ let xC;         // coordonnées X pour boucle dans la grille
 // Lancement d'une partie via bouton
 document.getElementById("new").addEventListener("click", function() {
 
+            
+    // Suppression ancienne grille
+    document.getElementById("game").innerHTML = "";
+    
+    
     // Demnande taille grille
     cols = prompt('Set colums qty',16);
     rows = prompt('Set rows qty',16);
@@ -79,8 +84,9 @@ document.getElementById("new").addEventListener("click", function() {
 
     function injectGrid() {
     
-        // 1. injection des balises <div class="H" id="x, y"> dans la balise <game>   
-        
+    // 1. injection des balises <div class="H" id="x, y"> dans la balise <game>   
+
+
         // Loop coordonnées Y
         for(yC = 0; yC < rows; yC++) {
             // Loop coordonnées X
@@ -92,9 +98,11 @@ document.getElementById("new").addEventListener("click", function() {
             };        
         }; 
     
+    // 2. Ajout des écoutes et actions 
+
         // Loop coordonnées Y
         for(yC = 0; yC < rows; yC++) {
-            // Loope coordonnées X
+            // Loop coordonnées X
             for (xC = 0; xC < cols; xC++) {                
                 
                 // Fonction anonyme 
@@ -112,20 +120,44 @@ document.getElementById("new").addEventListener("click", function() {
                         // Remplacement des classes
                         switch (true) {
                                 case cls.contains('H') :
-                                    cls.remove('H');
-                                    cls.add('S');
+                                    cls.remove('H');                                
+                                    if (cls.contains('X1')) {                                                                                                                                                      
+                                        for (let i = 0; i < bombQty; i++) {
+                                            document.getElementById(bombed[i]).classList.remove('X1')
+                                            document.getElementById(bombed[i]).classList.add('X2')
+                                        }
+                                    } else {
+                                        cls.add('S');
+                                    };                                                                                                                                            
                                     break;
                                 case cls.contains('S') : 
                                     break;
                                 case cls.contains('F') :
                                     cls.remove('F');
-                                    cls.add('S');
+                                    if (cls.contains('X1')) {                                                                                 
+                                        for (let i = 0; i < bombQty; i++) {
+                                            document.getElementById(bombed[i]).classList.remove('X1')
+                                            document.getElementById(bombed[i]).classList.add('X2')
+                                        }
+                                    } else {
+                                        cls.add('S');
+                                    };
                                     break;
                                 case cls.contains('Q') :
                                     cls.remove('Q');
-                                    cls.add('S');
+                                    var txt = document.getElementById(xCoord).getAttribute("class");
+                                    document.getElementById(xCoord).innerHTML = txt;                                
+                                    if (cls.contains('X1')) {
+                                        for (let i = 0; i < bombQty; i++) {
+                                            document.getElementById(bombed[i]).classList.remove('X1')
+                                            document.getElementById(bombed[i]).classList.add('X2')
+                                        }
+                                    } else {
+                                        cls.add('S');
+                                    };
                                     break;
-                            }
+                            
+                        }
                     });
                     
                     // Ajout écoute clic droit
@@ -135,20 +167,37 @@ document.getElementById("new").addEventListener("click", function() {
                         let cls = document.getElementById(xCoord).classList;
  
                         // Remplacement des classes
+
+
                         switch (true) {
                             case cls.contains('H') :
                                 cls.remove('H');
                                 cls.add('F');
+                                if (cls.contains("X1")) {
+                                    cls.remove('X1');
+                                    cls.add('X1');
+                                } 
                                 break;
                             case cls.contains('S') : 
                                 break;
                             case cls.contains('F') :
                                 cls.remove('F');
                                 cls.add('Q');
+                                document.getElementById(xCoord).innerHTML = "?"; 
+                                if (cls.contains("X1")) {
+                                    cls.remove('X1');
+                                    cls.add('X1');
+                                } 
                                 break;
                             case cls.contains('Q') :
                                 cls.remove('Q');
+                                var txt = document.getElementById(xCoord).getAttribute("class");
+                                document.getElementById(xCoord).innerHTML = txt;
                                 cls.add('H');
+                                if (cls.contains("X1")) {
+                                    cls.remove('X1');
+                                    cls.add('X1');
+                                } 
                                 break;
                         }
                     });
@@ -164,8 +213,10 @@ document.getElementById("new").addEventListener("click", function() {
 
 
         
-        // Set grid CSS
-        var style = "grid-template-columns: repeat(" + cols + ", minmax(40px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(40px, 1fr))";
+        //Set grid CSS (cols + rows)
+        var width = cols * 40;
+        var height = rows * 40;
+        var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", minmax(40px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(40px, 1fr))";
         document.getElementById("game").setAttribute("style", style);
 
 
@@ -193,7 +244,7 @@ document.getElementById("new").addEventListener("click", function() {
                 //Load coord. in bombed[]
                 bombed.push(bCoord);
                 //Set "X" value in grid
-                document.getElementById(bCoord).classList.add("X");   
+                document.getElementById(bCoord).classList.add("X1");   
                 document.getElementById(bCoord).innerHTML = "X";             
             } else {            
                 //Round + 1 if no bomb set
@@ -218,7 +269,7 @@ document.getElementById("new").addEventListener("click", function() {
                     var yMinus = yCoord - 1;
                     var yPlus = yCoord + 1;
                     var score = 0;
-                    document.getElementById(xCoord + "," + yCoord).innerHTML = 0;
+                    /*document.getElementById(xCoord + "," + yCoord).innerHTML = 0;*/
                     var nCoord;
                     var xM = 'undefined';
                     var xP = 'undefined';
@@ -287,8 +338,13 @@ document.getElementById("new").addEventListener("click", function() {
                     };
 
                     //write score in cell
-                    document.getElementById(xCoord + "," + yCoord).innerHTML = score;
                     document.getElementById(xCoord + "," + yCoord).classList.add(score);
+                    console.log(typeof(score));
+                    var test = score > 0;
+                    console.log(test);
+                    if (test == true) {
+                        document.getElementById(xCoord + "," + yCoord).innerHTML = score;
+                    }; 
                 }; 
             };
         };
@@ -301,250 +357,7 @@ document.getElementById("new").addEventListener("click", function() {
 });
 
 
-
-/*
-     
-        // 2. Injection de l'écoute sur les cellules de la grille
-
-
-       
-        // Loop coordonées Y        
-        for(yC = 0; yC < rows; yC++) {
-            //Loop coordonnées X
-            for (xC = 0; xC < cols; xC++) {
-                // fct° anonyme 
-                (function() {            
-                    // Assignation coordonées
-                    coord = xC + "," + yC;
-
-                    // Assignation écoute clic gauche 
-                    document.getElementById(coord).addEventListener("click", function() {                          
-                        // Modification style case
-                        document.getElementById(coord).style.color = "black";
-                        document.getElementById(coord).style.background = "grey";
-                        });
-
-                    // Assignation écoute clic droit
-                    document.getElementById(coord).addEventListener('contextmenu', function() {
-                        
-                        // Fonction anonyme    
-                        (function() { 
-                            
-                            if (locClick % 2 == 0) {
-
-                                // Modification style de case
-                                document.getElementById(coord).style.background = "pink";
-                                document.getElementById(coord).style.color = "pink";
-
-    
-                                //--> REMPLACER DANS L'ARRAY 
-    
-    
-                            } else {
-                                document.getElementById(coord).style.backgroundImage = "radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey)";
-                                document.getElementById(coord).style.color = "rgb(165, 164, 164)";
-
-                            }
-    
-                            return false;
-                            })();
-                    });                 
-                })();                       
-            };
-        }; 
-    
-    
-        //Set grid CSS (cols + rows)
-        var width = cols * 40;
-        var height = rows * 40;
-        var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", minmax(40px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(40px, 1fr))";
-        document.getElementById("game").setAttribute("style", style);
-    
-    
-         //Determine bombQty
-        if(diff == "easy") {var diffRatio = 0.05} 
-        else if (diff == "medium") {var diffRatio = 0.1}
-        else {var diffRatio = 0.2}
-        var bombQty = Math.floor(diffRatio*(cells))
-        document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
-
-    
-        //Init BOMBED array + counter
-        var bombed = [];
-        var n = 0;
-    
-        //Loop set BOMBS!!       
-        while (n < bombQty) {
-            //Calculate x + y
-            var xBomb = Math.floor(Math.random() * cols);
-            var yBomb = Math.floor(Math.random() * rows);
-            //Format value
-            var bCoord = xBomb + "," + yBomb;
-            //Check not bombed already
-            if (!bombed.includes(bCoord)) {          
-                //Load coord. in bombed[]
-                bombed.push(bCoord);
-                // Injecte texte "X" aux cellules minées
-                document.getElementById(bCoord).innerHTML = "X";
-                // Injecte class="X" aux cellules minées
-                document.getElementById(bCoord).classList.add("X");
-                
-            } else {            
-                //Round + 1 if no bomb set
-                n--;
-            };             
-            //Incr. loop 
-            n++;   
-        };
-    
-    
-        //Add points in clear cells
-            // Scan x,y 
-            for (yC = 0; yC < rows; yC++) {
-                for (xC = 0; xC < cols; xC++) {
-                    //If no bomb, calculate points
-                    if(document.getElementById(coord).innerHTML != "X") {
-                       //Calculate how many bombs around
-                            
-                        //Init neighbours var + array                                              
-                        var xMinus = xC - 1;         
-                        var xPlus = xC + 1;
-                        var yMinus = yC - 1;
-                        var yPlus = yC + 1;
-                        var score = 0;
-                        document.getElementById(coord).innerHTML = 0;
-                        var nCoord;
-                        var xM = 'undefined';
-                        var xP = 'undefined';
-                        var yM = 'undefined';
-                        var yP = 'undefined';                    
-                        if (xMinus >= 0) {var xM = xMinus;}                         
-                        if (xPlus < cols) {var xP = xPlus;}                         
-                        if (yMinus >= 0) {var yM = yMinus;}                        
-                        if (yPlus < rows) {var yP = yPlus;} 
-                            
-                        //Add points to score
-                        if(xM !== "undefined") {
-                            nCoord = xM + "," + yC;                                                 
-                            if(document.getElementById(nCoord).innerHTML =="X"){
-                                score += 1;
-                            };
-                        };
-                            
-                        if(xM !== 'undefined' && yM !== 'undefined') {
-                            nCoord = xM + "," + yM;                        
-                            if(document.getElementById(nCoord).innerHTML =="X"){
-                                score += 1;
-                            }; 
-                        };       
-                            
-                        if(xM !==  'undefined' && yP !== 'undefined') {
-                            nCoord = xM + "," + yP;                        
-                            if(document.getElementById(nCoord).innerHTML =="X"){
-                                score += 1;
-                            };
-                        };
-    
-                        if(xP !== 'undefined') {
-                            nCoord = xP + "," + yC;                        
-                            if(document.getElementById(nCoord).innerHTML =="X"){
-                                score += 1;
-                            };
-                        };
-    
-                        if (xP !== 'undefined' && yP !== 'undefined') {
-                            nCoord = xP + "," + yP;                        
-                            if(document.getElementById(nCoord).innerHTML =="X"){
-                                score += 1;
-                            };
-                        };
-    
-                        if (xP !== 'undefined' && yM !== 'undefined') {
-                            nCoord = xP + "," + yM;                        
-                            if(document.getElementById(nCoord).innerHTML =="X"){
-                                score += 1;
-                            };
-                        };                   
-                            
-                        if (yP !== 'undefined') {
-                            nCoord = xC + "," + yP;
-                            if(document.getElementById(nCoord).innerHTML =="X"){
-                                score += 1;
-                            };
-                        };
-    
-                        if (yM !== 'undefined') {
-                            nCoord = xC + "," + yM;
-                            if(document.getElementById(nCoord).innerHTML =="X"){
-                                score += 1;
-                            };
-                        };
-    
-                        //write score in cell
-                        document.getElementById(coord).innerHTML = score;
-                        document.getElementById(coord).classList.add(score);
-                    }; 
-                };
-            };
-        };
-    
-    
-
-                                                                                                // Appel fonction askLevel 
-
-    askLevel();
-
-
-
-});
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
+  
    // Double boucle for process x + y 
 
     /*  var yCoord = 0, yCoord = 0;
