@@ -15,11 +15,12 @@ body {
 }
 
 #game {
-    /*margin: auto;*/
+    width: 1200px;
+    height: 800px;
+    margin: auto;
     display: grid;
     align-items: center;
-    grid-gap: 0px;
-    border : solid 1px black;
+    position: relative;
 }
 
 
@@ -31,6 +32,7 @@ body {
     border: 1px solid rgb(73, 73, 73);
     background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
     color: rgba(0, 0, 0, 0);
+    text-align: center; 
 }
 
 .S {
