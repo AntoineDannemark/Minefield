@@ -3,61 +3,77 @@ body {
     background-image: url("../img/bg.jpg");
     background-size: 100%;
     background-repeat: no-repeat; 
+    /* empêcher sélection texte dans slots */ 
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
 
 }
 
 #game {
-    width: 1200px;
-    height: 800px;
-    margin: auto;
+    /*margin: auto;*/
     display: grid;
     align-items: center;
-
+    grid-gap: 0px;
+    border : solid 1px black;
 }
 
-#level {
-    height: 50px;
-}
 
-.slot {
+
+
+.H {
     width: 40px;
     height: 40px;
-    background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
-    background-color: rgb(165, 164, 164);
-    color: rgb(187, 178, 178);
-    font-weight: bold;
     border: 1px solid rgb(73, 73, 73);
-    text-align: center; 
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+    background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
+    color: rgba(0, 0, 0, 0);
 }
 
-.slot p {
-    color: red;
-    display: none;
+.S {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(73, 73, 73);
+    background-color: grey;
+    text-align: center; 
+    font-weight: bold;
+}
+
+.F {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(73, 73, 73);
+    background-image: radial-gradient(circle at center, red 5%, grey );
+    color: rgba(0, 0, 0, 0);
+}
+
+.Q {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(73, 73, 73);
+    background-image: radial-gradient(circle at center, yellow 5%, grey);
+    color: rgba(0, 0, 0, 0);
 }
 
 nav {
-
     height: 600px;
     width: 300px;
-    background-color: pink;
+    /*background-color: pink;*/
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     float: left;
-    margin: 200px;
+    margin: o;
 }
 
 #level { 
     display: flex;
     flex-direction: row;
     justify-content: center;
+    height: 50px; 
 }
 
 #level .btn {

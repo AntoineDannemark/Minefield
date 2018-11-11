@@ -34,11 +34,8 @@ const levbtns = "<button class='btn' style='width: 200px' id='easy'> - - EASY - 
                 
 let yC;         // coordonnées Y pour boucle dans la grille
 let xC;         // coordonnées X pour boucle dans la grille
-let coord;      // coordonnées concaténées x,y  
+//let coord;      // coordonnées concaténées x,y  
     
-
-                var rClick = [];        
-                var locClick;                
 
 //------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------GAME
@@ -84,21 +81,235 @@ document.getElementById("new").addEventListener("click", function() {
 
     function injectGrid() {
     
-        // 1. injection des balises <div class="slot" id="x, y"> dans la balise <game>   
+        // 1. injection des balises <div class="H" id="x, y"> dans la balise <game>   
         
         // Loop coordonnées Y
         for(yC = 0; yC < rows; yC++) {
             // Loop coordonnées X
-            for (xC = 0; xC < cols; xC++) {
+            for (xC = 0; xC < cols; xC++) {                                
                 // définition coordonnées ponctuelles
                 let iCoord = xC + "," + yC;     
                 // Injection
-                document.getElementById("game").innerHTML += "<div class='slot' id='" + iCoord + "'></div>";
+                document.getElementById("game").innerHTML += "<div class='H' id='" + iCoord + "'></div>";                                    
             };        
-        };    
+        }; 
+    
+        // Loop coordonnées Y
+        for(yC = 0; yC < rows; yC++) {
+            // Loope coordonnées X
+            for (xC = 0; xC < cols; xC++) {                
+                
+                // Fonction anonyme 
+                (function() {            
+                    
+                    // définition coordonnées ponctuelles
+                    let xCoord = xC + "," + yC;
+                    
+                    // Ajout écoute clic gauche
+                    document.getElementById(xCoord).addEventListener("click", function() {                                                  
+                        
+                        // Création variable classList de l'élément
+                        let cls = document.getElementById(xCoord).classList;
+                        
+                        // Remplacement des classes
+                        switch (true) {
+                                case cls.contains('H') :
+                                    cls.remove('H');
+                                    cls.add('S');
+                                    break;
+                                case cls.contains('S') : 
+                                    break;
+                                case cls.contains('F') :
+                                    cls.remove('F');
+                                    cls.add('S');
+                                    break;
+                                case cls.contains('Q') :
+                                    cls.remove('Q');
+                                    cls.add('S');
+                                    break;
+                            }
+                    });
+                    
+                    // Ajout écoute clic droit
+                    document.getElementById(xCoord).addEventListener('contextmenu', function() {
+
+                        // Création variable classList de l'élément
+                        let cls = document.getElementById(xCoord).classList;
+ 
+                        // Remplacement des classes
+                        switch (true) {
+                            case cls.contains('H') :
+                                cls.remove('H');
+                                cls.add('F');
+                                break;
+                            case cls.contains('S') : 
+                                break;
+                            case cls.contains('F') :
+                                cls.remove('F');
+                                cls.add('Q');
+                                break;
+                            case cls.contains('Q') :
+                                cls.remove('Q');
+                                cls.add('H');
+                                break;
+                        }
+                    });
+                })();
+
+
+    var rClick = [];        
+    var locClick;                
+
+                     
+        };
+    }; 
+
+
+        
+        // Set grid CSS
+        var style = "grid-template-columns: repeat(" + cols + ", minmax(40px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(40px, 1fr))";
+        document.getElementById("game").setAttribute("style", style);
+
+
+        //Determine bombQty
+        if(diff == "easy") {var diffRatio = 0.05} 
+        else if (diff == "medium") {var diffRatio = 0.1}
+        else {var diffRatio = 0.2}
+        var bombQty = Math.floor(diffRatio*(cells))
+        document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
+
+
+        //Init BOMBED array + counter
+        var bombed = [];
+        var n = 0;
+
+        //Loop set BOMBS!!       
+        while (n < bombQty) {
+            //Calculate x + y
+            var xBomb = Math.floor(Math.random() * cols);
+            var yBomb = Math.floor(Math.random() * rows);
+            //Format value
+            var bCoord = xBomb + "," + yBomb;
+            //Check not bombed already
+            if (!bombed.includes(bCoord)) {          
+                //Load coord. in bombed[]
+                bombed.push(bCoord);
+                //Set "X" value in grid
+                document.getElementById(bCoord).classList.add("X");   
+                document.getElementById(bCoord).innerHTML = "X";             
+            } else {            
+                //Round + 1 if no bomb set
+                n--;
+            };             
+            //Incr. loop 
+            n++;   
+        };
+
+
+    //Add points in clear cells
+        // Scan x,y 
+        for (yCoord = 0; yCoord < rows; yCoord++) {
+            for (xCoord = 0; xCoord < cols; xCoord++) {
+                //If no bomb, calculate points
+                if(document.getElementById(xCoord + "," + yCoord).innerHTML != "X") {
+                   //Calculate how many bombs around
+                        
+                    //Init neighbours var + array                                              
+                    var xMinus = xCoord - 1;         
+                    var xPlus = xCoord + 1;
+                    var yMinus = yCoord - 1;
+                    var yPlus = yCoord + 1;
+                    var score = 0;
+                    document.getElementById(xCoord + "," + yCoord).innerHTML = 0;
+                    var nCoord;
+                    var xM = 'undefined';
+                    var xP = 'undefined';
+                    var yM = 'undefined';
+                    var yP = 'undefined';                    
+                    if (xMinus >= 0) {var xM = xMinus;}                         
+                    if (xPlus < cols) {var xP = xPlus;}                         
+                    if (yMinus >= 0) {var yM = yMinus;}                        
+                    if (yPlus < rows) {var yP = yPlus;} 
+                        
+                    //Add points to score
+                    if(xM !== "undefined") {
+                        nCoord = xM + "," + yCoord;                                                 
+                        if(document.getElementById(nCoord).innerHTML =="X"){
+                            score += 1;
+                        };
+                    };
+                        
+                    if(xM !== 'undefined' && yM !== 'undefined') {
+                        nCoord = xM + "," + yM;                        
+                        if(document.getElementById(nCoord).innerHTML =="X"){
+                            score += 1;
+                        }; 
+                    };       
+                        
+                    if(xM !==  'undefined' && yP !== 'undefined') {
+                        nCoord = xM + "," + yP;                        
+                        if(document.getElementById(nCoord).innerHTML =="X"){
+                            score += 1;
+                        };
+                    };
+
+                    if(xP !== 'undefined') {
+                        nCoord = xP + "," + yCoord;                        
+                        if(document.getElementById(nCoord).innerHTML =="X"){
+                            score += 1;
+                        };
+                    };
+
+                    if (xP !== 'undefined' && yP !== 'undefined') {
+                        nCoord = xP + "," + yP;                        
+                        if(document.getElementById(nCoord).innerHTML =="X"){
+                            score += 1;
+                        };
+                    };
+
+                    if (xP !== 'undefined' && yM !== 'undefined') {
+                        nCoord = xP + "," + yM;                        
+                        if(document.getElementById(nCoord).innerHTML =="X"){
+                            score += 1;
+                        };
+                    };                   
+                        
+                    if (yP !== 'undefined') {
+                        nCoord = xCoord + "," + yP;
+                        if(document.getElementById(nCoord).innerHTML =="X"){
+                            score += 1;
+                        };
+                    };
+
+                    if (yM !== 'undefined') {
+                        nCoord = xCoord + "," + yM;
+                        if(document.getElementById(nCoord).innerHTML =="X"){
+                            score += 1;
+                        };
+                    };
+
+                    //write score in cell
+                    document.getElementById(xCoord + "," + yCoord).innerHTML = score;
+                    document.getElementById(xCoord + "," + yCoord).classList.add(score);
+                }; 
+            };
+        };
+    };
+
+    askLevel();
+
+
+
+});
+
+
+
+/*
      
         // 2. Injection de l'écoute sur les cellules de la grille
 
+
+       
         // Loop coordonées Y        
         for(yC = 0; yC < rows; yC++) {
             //Loop coordonnées X
@@ -288,7 +499,7 @@ document.getElementById("new").addEventListener("click", function() {
 
 
 });
-
+*/
 
 
 
