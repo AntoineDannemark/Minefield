@@ -46,8 +46,6 @@ let xC;         // coordonnées X pour boucle dans la grille
 // Lancement d'une partie via bouton
 document.getElementById("new").addEventListener("click", function() {
 
-    console.log("testé");
-
     // Demnande taille grille
     cols = prompt('Set colums qty',16);
     rows = prompt('Set rows qty',16);
