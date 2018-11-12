@@ -35,7 +35,9 @@ const levbtns = "<button class='btn' style='width: 200px' id='easy'> - - EASY - 
 let yC;         // coordonnées Y pour boucle dans la grille
 let xC;         // coordonnées X pour boucle dans la grille
 //let coord;      // coordonnées concaténées x,y  
-    
+
+// Array numbers to text
+const ntt = ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit'];
 
 //------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------GAME
@@ -113,7 +115,7 @@ document.getElementById("new").addEventListener("click", function() {
                     
                     // Ajout écoute clic gauche
                     document.getElementById(xCoord).addEventListener("click", function() {                                                  
-                        
+                        console.log
                         // Création variable classList de l'élément
                         let cls = document.getElementById(xCoord).classList;
                         
@@ -128,7 +130,138 @@ document.getElementById("new").addEventListener("click", function() {
                                         }
                                     } else {
                                         cls.add('S');
-                                    };                                                                                                                                            
+                                    };  
+                                    if (cls.contains('zero')) {   
+                                        (function() {
+                                        console.log(xC + " - " + yC);                                                                                                                                                   
+                                        let nArray =  [];
+                                        var xMin = xC - 1;         
+                                        var xPlu = xC + 1;
+                                        var yMin = yC - 1;
+                                        var yPlu = yC + 1;                                        
+                                        var nCoord;
+                                        var xMi = 'undefined';
+                                        var xPl = 'undefined';
+                                        var yMi = 'undefined';
+                                        var yPl = 'undefined';                    
+                                        if (xMin >= 0) {xMi = xMin;}                         
+                                        if (xPlu < cols) {xPl = xPlu;}                         
+                                        if (yMin >= 0) {yMi = yMin;}                        
+                                        if (yPlu < rows) {yPl = yPlu;} 
+                                        
+                                        if(xMi !== "undefined") {
+                                            nCoord = xMi + "," + yC;  
+                                            console.log("xMi = " + xMi);
+                                            console.log("ycoord = " + yC);
+                                            console.log("nCoord = " + nCoord);
+                                            console.log(typeof(nCoord));                                               
+                                            /*if (document.getElementById(nCoord).classList.contains('zero')) {
+                                                nArray.push(nCoord);
+                                            }
+                                            /*document.getElementById(nCoord).classList.remove('H');
+                                            document.getElementById(nCoord).classList.remove('F');
+                                            document.getElementById(nCoord).classList.remove('Q');*/
+                                        };
+                                            
+                                        if(xMi !== 'undefined' && yMi !== 'undefined') {
+                                            nCoord = xMi + "," + yMi;                  
+                                            console.log("xMi = " + xMi);
+                                            console.log("xMi = " + yMi);
+                                            console.log("nCoord = " + nCoord);                    
+                                            if (document.getElementById(nCoord).classList.contains('zero')) {
+                                                nArray.push(nCoord);
+                                            }
+                                            document.getElementById(nCoord).classList.remove('H');
+                                            document.getElementById(nCoord).classList.remove('F');
+                                            document.getElementById(nCoord).classList.remove('Q');
+                                        };     
+                                            
+                                        if(xMi !==  'undefined' && yPl !== 'undefined') {
+                                            nCoord = xMi + "," + yPl; 
+                                            console.log("xMi = " + xMi);
+                                            console.log("xMi = " + yPl);
+                                            console.log("nCoord = " + nCoord); 
+                                            if (document.getElementById(nCoord).classList.contains('zero')) {
+                                                nArray.push(nCoord);
+                                            }
+                                            document.getElementById(nCoord).classList.remove('H');
+                                            document.getElementById(nCoord).classList.remove('F');
+                                            document.getElementById(nCoord).classList.remove('Q');
+                                        };
+                    
+                                        if(xPl !== 'undefined') {
+                                            nCoord = xPl + "," + yC;  
+                                            console.log("xPl = " + xPl);
+                                            console.log("yCoord = " + yCoord);
+                                            console.log("nCoord = " + nCoord);                    
+                                            if (document.getElementById(nCoord).classList.contains('zero')) {
+                                                nArray.push(nCoord);
+                                            }
+                                            document.getElementById(nCoord).classList.remove('H');
+                                            document.getElementById(nCoord).classList.remove('F');
+                                            document.getElementById(nCoord).classList.remove('Q');
+                                        };
+                    
+                                        if (xPl !== 'undefined' && yPl !== 'undefined') {
+                                            nCoord = xPl + "," + yPl;    
+                                            console.log("xPl = " + xPl);
+                                            console.log("xPl = " + yPl);
+                                            console.log("nCoord = " + nCoord);                       
+                                            if (document.getElementById(nCoord).classList.contains('zero')) {
+                                                nArray.push(nCoord);
+                                            }
+                                            document.getElementById(nCoord).classList.remove('H');
+                                            document.getElementById(nCoord).classList.remove('F');
+                                            document.getElementById(nCoord).classList.remove('Q');
+                                        };
+                    
+                                        if (xPl !== 'undefined' && yMi !== 'undefined') {
+                                            nCoord = xPl + "," + yMi;  
+                                            console.log("xPl = " + xPl);
+                                            console.log("yMi = " + yMi);
+                                            console.log("nCoord = " + nCoord);                        
+                                            if (document.getElementById(nCoord).classList.contains('zero')) {
+                                                nArray.push(nCoord);
+                                            }
+                                            document.getElementById(nCoord).classList.remove('H');
+                                            document.getElementById(nCoord).classList.remove('F');
+                                            document.getElementById(nCoord).classList.remove('Q');
+                                        };                   
+                                            
+                                        if (yPl !== 'undefined') {
+                                            nCoord = xC + "," + yPl;
+                                            console.log("xCoord = " + xCoord);
+                                            console.log("yPl = " + yPl);
+                                            console.log("nCoord = " + nCoord);   
+                                            if (document.getElementById(nCoord).classList.contains('zero')) {
+                                                nArray.push(nCoord);
+                                            }
+                                            document.getElementById(nCoord).classList.remove('H');
+                                            document.getElementById(nCoord).classList.remove('F');
+                                            document.getElementById(nCoord).classList.remove('Q');
+                                        };
+                    
+                                        if (yMi !== 'undefined') {
+                                            nCoord = xC + "," + yMi;
+                                            console.log("xC = " + xC);
+                                            console.log("xMi = " + yMi);
+                                            console.log("nCoord = " + nCoord); 
+                                            if (document.getElementById(nCoord).classList.contains('zero')) {
+                                                nArray.push(nCoord);
+                                            }
+                                            document.getElementById(nCoord).classList.remove('H');
+                                            document.getElementById(nCoord).classList.remove('F');
+                                            document.getElementById(nCoord).classList.remove('Q');
+                                        };
+                                    })();
+                                };
+
+
+
+
+
+
+                                                                                                                                                                              
                                     break;
                                 case cls.contains('S') : 
                                     break;
@@ -225,7 +358,7 @@ document.getElementById("new").addEventListener("click", function() {
         else if (diff == "medium") {var diffRatio = 0.1}
         else {var diffRatio = 0.2}
         var bombQty = Math.floor(diffRatio*(cells))
-        document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
+        document.getElementById("mCounter").innerHTML = "<h3>Mines Left</h3><p id='left'>" + bombQty + "</p>";
 
 
         //Init BOMBED array + counter
@@ -338,10 +471,9 @@ document.getElementById("new").addEventListener("click", function() {
                     };
 
                     //write score in cell
-                    document.getElementById(xCoord + "," + yCoord).classList.add(score);
-                    console.log(typeof(score));
+                    let textscore = ntt[score]
+                    document.getElementById(xCoord + "," + yCoord).classList.add(textscore);
                     var test = score > 0;
-                    console.log(test);
                     if (test == true) {
                         document.getElementById(xCoord + "," + yCoord).innerHTML = score;
                     }; 
