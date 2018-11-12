@@ -1,6 +1,6 @@
 body {
     background-attachment: fixed;
-    background-image: url("../img/bg.jpg");
+    background-image: url("./assets/img/bg.jpg");
     background-size: 100%;
     background-repeat: no-repeat; 
     /* empêcher sélection texte dans slots */ 
@@ -121,4 +121,4 @@ h3 {
     width: 100px;
     border: 1px solid rgb(61, 61, 61);;
     border-radius: 10px;
-}
+
