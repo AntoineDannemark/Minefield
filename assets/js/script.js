@@ -237,6 +237,7 @@ document.getElementById("new").addEventListener("click", function() {
                                             };
                         
                                             if (yMi !== 'undefined') {
+                                                nCoord = xZ + "," + yMi;
                                                 if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
                                                     nArray.push(xZ);
                                                     nArray.push(yMi);
@@ -247,17 +248,22 @@ document.getElementById("new").addEventListener("click", function() {
                                                 document.getElementById(nCoord).classList.add('S');
                                             };
 
-                                            for (i = 0; i < nArray.length ; i+2) {
-                                                let j = i + 1;
-                                            checkaround(nArray[i], nArray[j]); 
-                                            } 
 
                                         };
 
                                         checkaround(xZ, yZ);                                        
 
-
-
+                                        console.log(nArray)
+                                        
+                                        if (nArray.length > 0) {
+                                            for (i = 0; i < nArray.length ; i+2) {
+                                                let j = i + 1;
+                                                console.log( nArray[i] + " " + nArray[j]);
+                                                checkaround(nArray[i], nArray[j]);
+                                                nArray.shift();
+                                                nArray.shift();                                      
+                                            };
+                                        };
                                     };
                                 
 
