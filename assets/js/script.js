@@ -112,7 +112,8 @@ document.getElementById("new").addEventListener("click", function() {
                     
                     // définition coordonnées ponctuelles
                     let xCoord = xC + "," + yC;
-                    
+                    let xZ = xC;
+                    let yZ = yC;
                     // Ajout écoute clic gauche
                     document.getElementById(xCoord).addEventListener("click", function() {                                                  
                         console.log
@@ -132,13 +133,14 @@ document.getElementById("new").addEventListener("click", function() {
                                         cls.add('S');
                                     };  
                                     if (cls.contains('zero')) {   
+
                                         (function() {
                                         console.log(xC + " - " + yC);                                                                                                                                                   
                                         let nArray =  [];
-                                        var xMin = xC - 1;         
-                                        var xPlu = xC + 1;
-                                        var yMin = yC - 1;
-                                        var yPlu = yC + 1;                                        
+                                        var xMin = xZ - 1;         
+                                        var xPlu = xZ + 1;
+                                        var yMin = yZ - 1;
+                                        var yPlu = yZ + 1;                                        
                                         var nCoord;
                                         var xMi = 'undefined';
                                         var xPl = 'undefined';
@@ -150,9 +152,9 @@ document.getElementById("new").addEventListener("click", function() {
                                         if (yPlu < rows) {yPl = yPlu;} 
                                         
                                         if(xMi !== "undefined") {
-                                            nCoord = xMi + "," + yC;  
+                                            nCoord = xMi + "," + yZ;  
                                             console.log("xMi = " + xMi);
-                                            console.log("ycoord = " + yC);
+                                            console.log("ycoord = " + yZ);
                                             console.log("nCoord = " + nCoord);
                                             console.log(typeof(nCoord));                                               
                                             /*if (document.getElementById(nCoord).classList.contains('zero')) {
@@ -190,7 +192,7 @@ document.getElementById("new").addEventListener("click", function() {
                                         };
                     
                                         if(xPl !== 'undefined') {
-                                            nCoord = xPl + "," + yC;  
+                                            nCoord = xPl + "," + yZ;  
                                             console.log("xPl = " + xPl);
                                             console.log("yCoord = " + yCoord);
                                             console.log("nCoord = " + nCoord);                    
@@ -229,7 +231,7 @@ document.getElementById("new").addEventListener("click", function() {
                                         };                   
                                             
                                         if (yPl !== 'undefined') {
-                                            nCoord = xC + "," + yPl;
+                                            nCoord = xZ + "," + yPl;
                                             console.log("xCoord = " + xCoord);
                                             console.log("yPl = " + yPl);
                                             console.log("nCoord = " + nCoord);   
@@ -242,8 +244,8 @@ document.getElementById("new").addEventListener("click", function() {
                                         };
                     
                                         if (yMi !== 'undefined') {
-                                            nCoord = xC + "," + yMi;
-                                            console.log("xC = " + xC);
+                                            nCoord = xZ + "," + yMi;
+                                            console.log("xC = " + xZ);
                                             console.log("xMi = " + yMi);
                                             console.log("nCoord = " + nCoord); 
                                             if (document.getElementById(nCoord).classList.contains('zero')) {
