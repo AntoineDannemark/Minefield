@@ -133,137 +133,135 @@ document.getElementById("new").addEventListener("click", function() {
                                         cls.add('S');
                                     };  
                                     if (cls.contains('zero')) {   
-
-                                        (function() {
-                                        console.log(xC + " - " + yC);                                                                                                                                                   
-                                        let nArray =  [];
-                                        var xMin = xZ - 1;         
-                                        var xPlu = xZ + 1;
-                                        var yMin = yZ - 1;
-                                        var yPlu = yZ + 1;                                        
-                                        var nCoord;
-                                        var xMi = 'undefined';
-                                        var xPl = 'undefined';
-                                        var yMi = 'undefined';
-                                        var yPl = 'undefined';                    
-                                        if (xMin >= 0) {xMi = xMin;}                         
-                                        if (xPlu < cols) {xPl = xPlu;}                         
-                                        if (yMin >= 0) {yMi = yMin;}                        
-                                        if (yPlu < rows) {yPl = yPlu;} 
                                         
-                                        if(xMi !== "undefined") {
-                                            nCoord = xMi + "," + yZ;  
-                                            console.log("xMi = " + xMi);
-                                            console.log("ycoord = " + yZ);
-                                            console.log("nCoord = " + nCoord);
-                                            console.log(typeof(nCoord));                                               
-                                            /*if (document.getElementById(nCoord).classList.contains('zero')) {
-                                                nArray.push(nCoord);
-                                            }
-                                            /*document.getElementById(nCoord).classList.remove('H');
-                                            document.getElementById(nCoord).classList.remove('F');
-                                            document.getElementById(nCoord).classList.remove('Q');*/
-                                        };
+                                        let nArray =  [];
+
+                                        function checkaround(xZ, Yz) {
+
+                                            let xMin = xZ - 1;         
+                                            let xPlu = xZ + 1;
+                                            let yMin = yZ - 1;
+                                            let yPlu = yZ + 1;                                        
+                                            let nCoord;
+                                            let xMi = 'undefined';
+                                            let xPl = 'undefined';
+                                            let yMi = 'undefined';
+                                            let yPl = 'undefined';                    
+                                            if (xMin >= 0) {xMi = xMin;}                         
+                                            if (xPlu < cols) {xPl = xPlu;}                         
+                                            if (yMin >= 0) {yMi = yMin;}                        
+                                            if (yPlu < rows) {yPl = yPlu;} 
                                             
-                                        if(xMi !== 'undefined' && yMi !== 'undefined') {
-                                            nCoord = xMi + "," + yMi;                  
-                                            console.log("xMi = " + xMi);
-                                            console.log("xMi = " + yMi);
-                                            console.log("nCoord = " + nCoord);                    
-                                            if (document.getElementById(nCoord).classList.contains('zero')) {
-                                                nArray.push(nCoord);
-                                            }
-                                            document.getElementById(nCoord).classList.remove('H');
-                                            document.getElementById(nCoord).classList.remove('F');
-                                            document.getElementById(nCoord).classList.remove('Q');
-                                        };     
-                                            
-                                        if(xMi !==  'undefined' && yPl !== 'undefined') {
-                                            nCoord = xMi + "," + yPl; 
-                                            console.log("xMi = " + xMi);
-                                            console.log("xMi = " + yPl);
-                                            console.log("nCoord = " + nCoord); 
-                                            if (document.getElementById(nCoord).classList.contains('zero')) {
-                                                nArray.push(nCoord);
-                                            }
-                                            document.getElementById(nCoord).classList.remove('H');
-                                            document.getElementById(nCoord).classList.remove('F');
-                                            document.getElementById(nCoord).classList.remove('Q');
+                                            if(xMi !== "undefined") {
+                                                nCoord = xMi + "," + yZ;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xMi);
+                                                    nArray.push(yZ);
+                                                };
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                                                
+                                            if(xMi !== 'undefined' && yMi !== 'undefined') {
+                                                nCoord = xMi + "," + yMi;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(yMi);
+                                                    nArray.push(yZ);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };     
+                                                
+                                            if(xMi !==  'undefined' && yPl !== 'undefined') {
+                                                nCoord = xMi + "," + yPl;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xMi);
+                                                    nArray.push(yPl);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                        
+                                            if(xPl !== 'undefined') {
+                                                nCoord = xPl + "," + yZ;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xPl);
+                                                    nArray.push(yZ);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                        
+                                            if (xPl !== 'undefined' && yPl !== 'undefined') {
+                                                nCoord = xPl + "," + yPl;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xPl);
+                                                    nArray.push(yPl);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                        
+                                            if (xPl !== 'undefined' && yMi !== 'undefined') {
+                                                nCoord = xPl + "," + yMi;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xPl);
+                                                    nArray.push(yMi);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };                   
+                                                
+                                            if (yPl !== 'undefined') {
+                                                nCoord = xZ + "," + yPl;                                                
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xZ);
+                                                    nArray.push(yPl);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                        
+                                            if (yMi !== 'undefined') {
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xZ);
+                                                    nArray.push(yMi);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+
+                                            for (i = 0; i < nArray.length ; i+2) {
+                                                let j = i + 1;
+                                            checkaround(nArray[i], nArray[j]); 
+                                            } 
+
                                         };
-                    
-                                        if(xPl !== 'undefined') {
-                                            nCoord = xPl + "," + yZ;  
-                                            console.log("xPl = " + xPl);
-                                            console.log("yCoord = " + yCoord);
-                                            console.log("nCoord = " + nCoord);                    
-                                            if (document.getElementById(nCoord).classList.contains('zero')) {
-                                                nArray.push(nCoord);
-                                            }
-                                            document.getElementById(nCoord).classList.remove('H');
-                                            document.getElementById(nCoord).classList.remove('F');
-                                            document.getElementById(nCoord).classList.remove('Q');
-                                        };
-                    
-                                        if (xPl !== 'undefined' && yPl !== 'undefined') {
-                                            nCoord = xPl + "," + yPl;    
-                                            console.log("xPl = " + xPl);
-                                            console.log("xPl = " + yPl);
-                                            console.log("nCoord = " + nCoord);                       
-                                            if (document.getElementById(nCoord).classList.contains('zero')) {
-                                                nArray.push(nCoord);
-                                            }
-                                            document.getElementById(nCoord).classList.remove('H');
-                                            document.getElementById(nCoord).classList.remove('F');
-                                            document.getElementById(nCoord).classList.remove('Q');
-                                        };
-                    
-                                        if (xPl !== 'undefined' && yMi !== 'undefined') {
-                                            nCoord = xPl + "," + yMi;  
-                                            console.log("xPl = " + xPl);
-                                            console.log("yMi = " + yMi);
-                                            console.log("nCoord = " + nCoord);                        
-                                            if (document.getElementById(nCoord).classList.contains('zero')) {
-                                                nArray.push(nCoord);
-                                            }
-                                            document.getElementById(nCoord).classList.remove('H');
-                                            document.getElementById(nCoord).classList.remove('F');
-                                            document.getElementById(nCoord).classList.remove('Q');
-                                        };                   
-                                            
-                                        if (yPl !== 'undefined') {
-                                            nCoord = xZ + "," + yPl;
-                                            console.log("xCoord = " + xCoord);
-                                            console.log("yPl = " + yPl);
-                                            console.log("nCoord = " + nCoord);   
-                                            if (document.getElementById(nCoord).classList.contains('zero')) {
-                                                nArray.push(nCoord);
-                                            }
-                                            document.getElementById(nCoord).classList.remove('H');
-                                            document.getElementById(nCoord).classList.remove('F');
-                                            document.getElementById(nCoord).classList.remove('Q');
-                                        };
-                    
-                                        if (yMi !== 'undefined') {
-                                            nCoord = xZ + "," + yMi;
-                                            console.log("xC = " + xZ);
-                                            console.log("xMi = " + yMi);
-                                            console.log("nCoord = " + nCoord); 
-                                            if (document.getElementById(nCoord).classList.contains('zero')) {
-                                                nArray.push(nCoord);
-                                            }
-                                            document.getElementById(nCoord).classList.remove('H');
-                                            document.getElementById(nCoord).classList.remove('F');
-                                            document.getElementById(nCoord).classList.remove('Q');
-                                        };
-                                    })();
-                                };
+
+                                        checkaround(xZ, yZ);                                        
 
 
 
+                                    };
+                                
 
-
-
-                                                                                                                                                                              
+                                                                                                                                                                                          
                                     break;
                                 case cls.contains('S') : 
                                     break;
@@ -395,7 +393,7 @@ document.getElementById("new").addEventListener("click", function() {
         for (yCoord = 0; yCoord < rows; yCoord++) {
             for (xCoord = 0; xCoord < cols; xCoord++) {
                 //If no bomb, calculate points
-                if(document.getElementById(xCoord + "," + yCoord).innerHTML != "X") {
+                if(!(document.getElementById(xCoord + "," + yCoord).classList.contains("X"))) {
                    //Calculate how many bombs around
                         
                     //Init neighbours var + array                                              
@@ -474,9 +472,14 @@ document.getElementById("new").addEventListener("click", function() {
 
                     //write score in cell
                     let textscore = ntt[score]
-                    document.getElementById(xCoord + "," + yCoord).classList.add(textscore);
+                    
+                    if (!(document.getElementById(xCoord + "," + yCoord).classList.contains('X1'))) {
+                        document.getElementById(xCoord + "," + yCoord).classList.add(textscore);
+                    };
+                    
                     var test = score > 0;
-                    if (test == true) {
+                    
+                    if (test) {
                         document.getElementById(xCoord + "," + yCoord).innerHTML = score;
                     }; 
                 }; 
