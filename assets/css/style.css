@@ -23,10 +23,8 @@ body {
     justify-content: center;
     position: relative;
     opacity: 0.9;
+
 }
-
-
-
 
 .H {
     width: 40px;
@@ -35,7 +33,6 @@ body {
     border-radius: 10px;
     background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
     color: rgba(0, 0, 0, 0);
-
 }
 
 .S {
@@ -56,7 +53,6 @@ body {
     border-radius: 10px;
     background-image: radial-gradient(circle at center, red 5%, grey );
     color: rgba(0, 0, 0, 0);
-    z-index: 0;
 }
 
 .Q {
@@ -69,17 +65,7 @@ body {
     text-align: center; 
     font-weight: bold;
     font-size: 30px;
-
 }
-
-/*.X1 {
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgb(73, 73, 73);
-    border-radius: 10px;
-    background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
-
-}*/
 
 .X2 {
     width: 40px;
@@ -88,18 +74,13 @@ body {
     border-radius: 10px;
     background-image: radial-gradient(circle at center, black, red);
     color: rgba(0, 0, 0, 0);
-
 }
 
 nav {
-    height: 600px;
-    width: 300px;
-    /*background-color: pink;*/
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    float: right;
-    margin: o;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr, 1fr, 1fr;
+    grid-template-areas: "cnt btn .";
 }
 
 #level { 
@@ -109,8 +90,10 @@ nav {
     height: 50px; 
 }
 
-#level .btn {
+.btn {
     margin: 0px 20px 0px 20px;
+    border-radius: 10px;
+    grid-area: 'btn';
 }
 
 #new {
@@ -119,22 +102,23 @@ nav {
 
 .cnt {
     align-self: center;
-    border: solid black 1px;
-    width: 100px;
-    height: 100px;
     text-align: center;
-    padding: 10px;
-    margin: 0px;
+    margin: 0 50px;
+    grid-area: 'cnt';
 } 
 
-h2 {
+h3 {
+    font-size: 30px;
     margin-bottom: 0px;
-    background-color: blue;
-
+    background-color: rgb(141, 141, 141);
+    align-self: center;
 }
 
 .cnt  p {
     font-size: 1.5em;
     font-weight: bold;
+    background-color: grey;
+    width: 100px;
+    border: 1px solid rgb(61, 61, 61);;
+    border-radius: 10px;
 
-}

@@ -35,7 +35,9 @@ const levbtns = "<button class='btn' style='width: 200px' id='easy'> - - EASY - 
 let yC;         // coordonnées Y pour boucle dans la grille
 let xC;         // coordonnées X pour boucle dans la grille
 //let coord;      // coordonnées concaténées x,y  
-    
+
+// Array numbers to text
+const ntt = ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit'];
 
 //------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------GAME
@@ -110,10 +112,11 @@ document.getElementById("new").addEventListener("click", function() {
                     
                     // définition coordonnées ponctuelles
                     let xCoord = xC + "," + yC;
-                    
+                    let xZ = xC;
+                    let yZ = yC;
                     // Ajout écoute clic gauche
                     document.getElementById(xCoord).addEventListener("click", function() {                                                  
-                        
+                        console.log
                         // Création variable classList de l'élément
                         let cls = document.getElementById(xCoord).classList;
                         
@@ -128,7 +131,143 @@ document.getElementById("new").addEventListener("click", function() {
                                         }
                                     } else {
                                         cls.add('S');
-                                    };                                                                                                                                            
+                                    };  
+                                    if (cls.contains('zero')) {   
+                                        
+                                        let nArray =  [];
+
+                                        function checkaround(xZ, Yz) {
+
+                                            let xMin = xZ - 1;         
+                                            let xPlu = xZ + 1;
+                                            let yMin = yZ - 1;
+                                            let yPlu = yZ + 1;                                        
+                                            let nCoord;
+                                            let xMi = 'undefined';
+                                            let xPl = 'undefined';
+                                            let yMi = 'undefined';
+                                            let yPl = 'undefined';                    
+                                            if (xMin >= 0) {xMi = xMin;}                         
+                                            if (xPlu < cols) {xPl = xPlu;}                         
+                                            if (yMin >= 0) {yMi = yMin;}                        
+                                            if (yPlu < rows) {yPl = yPlu;} 
+                                            
+                                            if(xMi !== "undefined") {
+                                                nCoord = xMi + "," + yZ;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xMi);
+                                                    nArray.push(yZ);
+                                                };
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                                                
+                                            if(xMi !== 'undefined' && yMi !== 'undefined') {
+                                                nCoord = xMi + "," + yMi;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(yMi);
+                                                    nArray.push(yZ);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };     
+                                                
+                                            if(xMi !==  'undefined' && yPl !== 'undefined') {
+                                                nCoord = xMi + "," + yPl;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xMi);
+                                                    nArray.push(yPl);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                        
+                                            if(xPl !== 'undefined') {
+                                                nCoord = xPl + "," + yZ;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xPl);
+                                                    nArray.push(yZ);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                        
+                                            if (xPl !== 'undefined' && yPl !== 'undefined') {
+                                                nCoord = xPl + "," + yPl;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xPl);
+                                                    nArray.push(yPl);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                        
+                                            if (xPl !== 'undefined' && yMi !== 'undefined') {
+                                                nCoord = xPl + "," + yMi;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xPl);
+                                                    nArray.push(yMi);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };                   
+                                                
+                                            if (yPl !== 'undefined') {
+                                                nCoord = xZ + "," + yPl;                                                
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xZ);
+                                                    nArray.push(yPl);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+                        
+                                            if (yMi !== 'undefined') {
+                                                nCoord = xZ + "," + yMi;
+                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
+                                                    nArray.push(xZ);
+                                                    nArray.push(yMi);
+                                                }
+                                                document.getElementById(nCoord).classList.remove('H');
+                                                document.getElementById(nCoord).classList.remove('F');
+                                                document.getElementById(nCoord).classList.remove('Q');
+                                                document.getElementById(nCoord).classList.add('S');
+                                            };
+
+
+                                        };
+
+                                        checkaround(xZ, yZ);                                        
+
+                                        console.log(nArray)
+                                        
+                                        if (nArray.length > 0) {
+                                            for (i = 0; i < nArray.length ; i+2) {
+                                                let j = i + 1;
+                                                console.log( nArray[i] + " " + nArray[j]);
+                                                checkaround(nArray[i], nArray[j]);
+                                                nArray.shift();
+                                                nArray.shift();                                      
+                                            };
+                                        };
+                                    };
+                                
+
+                                                                                                                                                                                          
                                     break;
                                 case cls.contains('S') : 
                                     break;
@@ -225,7 +364,7 @@ document.getElementById("new").addEventListener("click", function() {
         else if (diff == "medium") {var diffRatio = 0.1}
         else {var diffRatio = 0.2}
         var bombQty = Math.floor(diffRatio*(cells))
-        document.getElementById("mCounter").innerHTML = "<h2>Mines Left</h2> <p>" + bombQty + "</p>";
+        document.getElementById("mCounter").innerHTML = "<h3>Mines Left</h3><p id='left'>" + bombQty + "</p>";
 
 
         //Init BOMBED array + counter
@@ -260,7 +399,7 @@ document.getElementById("new").addEventListener("click", function() {
         for (yCoord = 0; yCoord < rows; yCoord++) {
             for (xCoord = 0; xCoord < cols; xCoord++) {
                 //If no bomb, calculate points
-                if(document.getElementById(xCoord + "," + yCoord).innerHTML != "X") {
+                if(!(document.getElementById(xCoord + "," + yCoord).classList.contains("X"))) {
                    //Calculate how many bombs around
                         
                     //Init neighbours var + array                                              
@@ -338,11 +477,15 @@ document.getElementById("new").addEventListener("click", function() {
                     };
 
                     //write score in cell
-                    document.getElementById(xCoord + "," + yCoord).classList.add(score);
-                    console.log(typeof(score));
+                    let textscore = ntt[score]
+                    
+                    if (!(document.getElementById(xCoord + "," + yCoord).classList.contains('X1'))) {
+                        document.getElementById(xCoord + "," + yCoord).classList.add(textscore);
+                    };
+                    
                     var test = score > 0;
-                    console.log(test);
-                    if (test == true) {
+                    
+                    if (test) {
                         document.getElementById(xCoord + "," + yCoord).innerHTML = score;
                     }; 
                 }; 
