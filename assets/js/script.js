@@ -79,11 +79,11 @@ document.getElementById("new").addEventListener("click", function() {
             } else {
                 gameArray[index].isBomb = true;
                 bombArray.push(gameArray[index]); 
-                getSurrounderIndex(index)
                 var filtSurr = getSurrounderIndex(index);
                 var filtArrLen = filtSurr.length;
-                for (let j = 0; j < filtArrLen; j++) {
-                    gameArray[filtSurr[j]].val += 1;
+                for (let k = 0; k < filtArrLen; k++) {
+                    gameArray[filtSurr[k]].val += 1;
+  
                 };
             }
         }
@@ -117,19 +117,28 @@ document.getElementById("new").addEventListener("click", function() {
         surrounderArray.push(ind5);
         surrounderArray.push(ind6);
         surrounderArray.push(ind7);
-        surrounderArray.push(ind8);
+        surrounderArray.push(ind8);        
         //Enlever les -1(coord hors grille)
         var filtSurr = surrounderArray.filter(function(element) {
             return element !== -1;
         });
         return filtSurr;
+        
     }
 
-    /*
     function injectGrid () {
 
-    }   
-    */
+        for (let id = 0; id < cells; id++) {
+            
+            var div = document.createElement("div");
+            var game = document.getElementById("game"); 
+            game.appendChild(div);
+            div.id = "id" + id;
+            let divid = "id" + id;
+            document.getElementById(divid).innerHTML = gameArray[id].val;        
+        }
+
+    }       
 
     function askLevel() {
 
@@ -152,7 +161,7 @@ document.getElementById("new").addEventListener("click", function() {
                     // Mettre les mines
                     setBombs(diffRatio);                  
                     // Exécute fonction InjectGrid
-                    //injectGrid();      
+                   // injectGrid();      
 
           
                 };
