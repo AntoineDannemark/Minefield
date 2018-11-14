@@ -1,4 +1,4 @@
-                                                                                                // Scripts initialisation de la page
+// Scripts initialisation de la page
 
 // Empêcher le menu contextuel du clic droit
 window.onload = function() {
@@ -7,20 +7,23 @@ window.onload = function() {
     }, false);
 };
 
-
-//-----------------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------
                                                                                                 // Index Variables globales
 
 let cols;       // nombre de colonnes de la grille
 let rows;       // nombre de lignes de la grille
 let cells;      // nombre de cellules de la grille
 
+
 let diff;       // difficulté de la partie
                 //  * "easy"
                 //  * "medium" 
                 //  * "hard"
+
+let diffRatio;
                 
 const diffArray = ["easy", "medium", "hard"]; // Array choix difficulté
+const diffRatioArray = [0.05, 0.1, 0.2];
 
 // Phrases de confirmation lors de la sélection d'un niveau de difficulté
 const cPhrases = ["Difficulty level: EASY\nYou little coward baby!\nStill time to change your mind little pussy!",
@@ -31,21 +34,292 @@ const cPhrases = ["Difficulty level: EASY\nYou little coward baby!\nStill time t
 const levbtns = "<button class='btn' style='width: 200px' id='easy'> - - EASY - - <br/>Don't push me too hard!" +
                 "</button><button class='btn' style='width: 200px' id='medium'> - - MEDIUM - - <br/>I'm average shit</button>" +
                 "<button class='btn' style='width: 200px' id='hard'> - - HARD - - <br/>Do me hardcore!</button>";  
-                
-let yC;         // coordonnées Y pour boucle dans la grille
-let xC;         // coordonnées X pour boucle dans la grille
-//let coord;      // coordonnées concaténées x,y  
 
-// Array numbers to text
-const ntt = ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit'];
+var x = 0;
+var y = 0;
+
+
+function populateArray (arr, cols, rows) {
+    let ref = 0;
+    for (y = 0; y < cols; y++) {
+        for (x = 0; x < rows; x++) {
+            arr.push({
+                "x": x,
+                "y": y,
+                "val": 0,
+                "status": "H",
+                "isBomb": false,
+                "ref": ref
+            });  
+            ref++;              
+        }    
+    }
+}
+
+
+function setBombs(diffRatio) {
+    var bombQty = Math.floor(cells*diffRatio);
+    for (let j = 0; j < bombQty ; j++) {            
+        index = Math.floor(Math.random()*cells);
+        if (gameArray[index].isBomb == true) {
+            j--;
+        } else {
+            gameArray[index].isBomb = true;
+            gameArray[index].val = undefined;
+            bombArray.push(gameArray[index]); 
+            var filtSurr = getSurrounderIndex(index);
+            var filtArrLen = filtSurr.length;
+            for (let k = 0; k < filtArrLen; k++) {
+                if (!gameArray[filtSurr[k]].isBomb) {
+                    gameArray[filtSurr[k]].val += 1;
+                }
+            };
+        }
+    }
+    document.getElementById("mCounter").innerHTML = bombQty;
+}
+
+
+function injectGrid () {
+
+    for (let id = 0; id < cells; id++) {
+
+        var div = document.createElement("div");
+        var game = document.getElementById("game"); 
+
+        game.appendChild(div);
+        
+        div.id = "id" + id;
+        div.classList.add("H");
+        
+        let divid = "id" + id;
+        let slot = document.getElementById(divid)
+
+        if (!gameArray[id].val == 0) {
+            slot.innerHTML = gameArray[id].val; 
+        } else if (gameArray[id].isBomb) {
+            slot.innerHTML = "X" ;
+        } 
+        lClick(divid, id);
+        rClick (divid, id);
+    }
+}       
+
+
+function setGridCSS() {
+    
+    //Set grid CSS (cols + rows)
+    var width = cols * 40;
+    var height = rows * 40;
+    var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", minmax(40px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(40px, 1fr))";
+    document.getElementById("game").setAttribute("style", style);
+}
+
+
+function getSurrounderIndex(index) {
+    let xCoord = gameArray[index].x;
+    let yCoord = gameArray[index].y;
+    let surrounderArray = []
+    let obj1 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord-1));
+    let obj2 = gameArray.find(obj => obj.x === xCoord && obj.y === (yCoord-1));
+    let obj3 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === (yCoord-1));
+    let obj4 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === yCoord);
+    let obj5 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === (yCoord+1));
+    let obj6 = gameArray.find(obj => obj.x === xCoord && obj.y === (yCoord+1));
+    let obj7 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord+1));
+    let obj8 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === yCoord);
+    let ind1 = gameArray.indexOf(obj1);
+    let ind2 = gameArray.indexOf(obj2);
+    let ind3 = gameArray.indexOf(obj3);
+    let ind4 = gameArray.indexOf(obj4);
+    let ind5 = gameArray.indexOf(obj5);
+    let ind6 = gameArray.indexOf(obj6);
+    let ind7 = gameArray.indexOf(obj7);
+    let ind8 = gameArray.indexOf(obj8);
+    surrounderArray.push(ind1);
+    surrounderArray.push(ind2);
+    surrounderArray.push(ind3);
+    surrounderArray.push(ind4);
+    surrounderArray.push(ind5);
+    surrounderArray.push(ind6);
+    surrounderArray.push(ind7);
+    surrounderArray.push(ind8);        
+    //Enlever les -1(coord hors grille)
+    var filtSurr = surrounderArray.filter(function(element) {
+        return element !== -1;
+    });
+    return filtSurr;
+    
+}
+
+function start() {
+
+    gameArray = [];
+    bombArray = [];    
+    
+    // Injecte les boutons dans la balise level
+    document.getElementById("level").innerHTML = levbtns;        
+    // Boucle dans l'array de difficulté
+    for (let i = 0; i < 3; i++ ) {
+        // Ajout écoute boutons
+        document.getElementById(diffArray[i]).addEventListener("click", function() {
+            // Au clic, demande confirmation
+            if(confirm(cPhrases[i])) {    
+                // stocke niveau choisi
+                diff = diffArray[i];
+                diffRatio = diffRatioArray[i];
+                // Nettoye la balise level
+                document.getElementById("level").innerHTML = "";     
+                // Créer l'array 
+                populateArray(gameArray, cols, rows);
+                // Mettre les mines
+                setBombs(diffRatio);    
+                // Exécute fonction InjectGrid
+                injectGrid();      
+                // Exécute fct setGridCSS
+                setGridCSS();   
+            };
+        });
+    }
+};
+
+
+
+
+
+
+
+
+
+
+function lClick(divid, idx) {
+    
+    document.getElementById(divid).addEventListener("click", function () { 
+
+        if (gameArray[idx].isBomb) {
+
+
+            for (let k = 0; k < bombArray.length ; k++) {
+
+                let divid = "id"+ bombArray[k].ref;
+                document.getElementById(divid).classList.add('X2');
+                document.getElementById(divid).classList.remove('H');
+                document.getElementById(divid).classList.remove('F');
+                document.getElementById(divid).classList.remove('Q');
+            }
+           
+
+        } else if (gameArray[idx].val == 0) {
+
+            let divid = "id" + idx
+            document.getElementById(divid).classList.add('S');
+            document.getElementById(divid).classList.remove('H');
+            document.getElementById(divid).classList.remove('F');
+            document.getElementById(divid).classList.remove('Q');
+            
+            removeZeros(idx);
+
+        } else {
+            let divid = "id" + idx
+            document.getElementById(divid).classList.add('S');
+            document.getElementById(divid).classList.remove('H');
+            document.getElementById(divid).classList.remove('F');
+            document.getElementById(divid).classList.remove('Q');
+            document.getElementById(divid).innerHTML = gameArray[idx].val;
+        }
+    });    
+}
+
+function rClick (divid, id) {
+
+    document.getElementById(divid).addEventListener('contextmenu', function() {
+
+        // Création variable classList de l'élément
+        let cls = document.getElementById(divid).classList;
+ 
+        // Remplacement des classes
+
+        switch (true) {
+            case cls.contains('H') :
+                cls.remove('H');
+                cls.add('F');
+                if (cls.contains("X1")) {
+                    cls.remove('X1');
+                    cls.add('X1');
+                } 
+                break;
+            case cls.contains('S') : 
+                break;
+            case cls.contains('F') :
+                cls.remove('F');
+                cls.add('Q');
+                document.getElementById(divid).innerHTML = "?"; 
+                if (cls.contains("X1")) {
+                    cls.remove('X1');
+                    cls.add('X1');
+                } 
+                break;
+            case cls.contains('Q') :
+                cls.remove('Q');
+                if (gameArray[id].val !== 0) {
+                    var txt = gameArray[id].val;
+                } else {
+                        var txt = "";
+                }
+                
+                document.getElementById(divid).innerHTML = txt;
+                cls.add('H');
+                if (cls.contains("X1")) {
+                    cls.remove('X1');
+                    cls.add('X1');
+                } 
+                break;
+        }
+    });
+
+}
+
+function removeZeros(idx) {
+
+    var filtsurr = getSurrounderIndex(idx)
+
+    for (let i = 0; i < filtsurr.length; i++) {
+
+        if (gameArray[filtsurr[i]].status !== 'S' && gameArray[filtsurr[i]].val == 0) {
+            
+            gameArray[filtsurr[i]].status = 'S';
+            
+            let divid = 'id' + gameArray[filtsurr[i]].ref
+            
+            document.getElementById(divid).classList.add('S');
+            document.getElementById(divid).classList.remove('H');
+            document.getElementById(divid).classList.remove('F');
+            document.getElementById(divid).classList.remove('Q');
+            document.getElementById(divid).innerHTML = "";
+            
+            removeZeros(gameArray[filtsurr[i]].ref);
+
+        } else if (gameArray[filtsurr[i]].status !== 'S' && gameArray[filtsurr[i]].val !== undefined) {
+            
+            let divid = 'id' + gameArray[filtsurr[i]].ref
+            
+            document.getElementById(divid).classList.add('S');
+            document.getElementById(divid).classList.remove('H');
+            document.getElementById(divid).classList.remove('F');
+            document.getElementById(divid).classList.remove('Q');
+            document.getElementById(divid).innerHTML = gameArray[filtsurr[i]].val
+        }
+    }
+
+}
+
+
 
 //------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------GAME
 
 
-                                                                                                // 1. CHARGEMENT DE LA PARTIE
-
-// Lancement d'une partie via bouton
+// Lancement d'une partie via bouton START
 document.getElementById("new").addEventListener("click", function() {
 
             
@@ -53,484 +327,33 @@ document.getElementById("new").addEventListener("click", function() {
     document.getElementById("game").innerHTML = "";
     
     
-    // Demnande taille grille
+    // Demande taille grille
     cols = prompt('Set colums qty',16);
     rows = prompt('Set rows qty',16);
     cells = cols*rows;
-
-                                                                                                // Définition fonction askLevel
-
-    function askLevel() {
-
-        // Injecte les boutons dans la balise level
-        document.getElementById("level").innerHTML = levbtns;
-        
-        // Boucle dans l'array de difficulté
-        for (let i = 0; i < 3; i++ ) {
-            // Ajout écoute boutons
-            document.getElementById(diffArray[i]).addEventListener("click", function() {
-                // Au clic, demande confirmation
-                if(confirm(cPhrases[i])) {    
-                    // stocke niveau choisi
-                    diff = diffArray[i];
-                    // Nettoye la balise level
-                    document.getElementById("level").innerHTML = "";
-                    // Exécute fonction InjectGrid
-                    injectGrid();                
-                };
-            });
-        }
-    };
-
-                                                                                                // Définition fonction injectGrid
-
-    function injectGrid() {
-    
-    // 1. injection des balises <div class="H" id="x, y"> dans la balise <game>   
-
-
-        // Loop coordonnées Y
-        for(yC = 0; yC < rows; yC++) {
-            // Loop coordonnées X
-            for (xC = 0; xC < cols; xC++) {                                
-                // définition coordonnées ponctuelles
-                let iCoord = xC + "," + yC;     
-                // Injection
-                document.getElementById("game").innerHTML += "<div class='H' id='" + iCoord + "'></div>";                                    
-            };        
-        }; 
-    
-    // 2. Ajout des écoutes et actions 
-
-        // Loop coordonnées Y
-        for(yC = 0; yC < rows; yC++) {
-            // Loop coordonnées X
-            for (xC = 0; xC < cols; xC++) {                
-                
-                // Fonction anonyme 
-                (function() {            
-                    
-                    // définition coordonnées ponctuelles
-                    let xCoord = xC + "," + yC;
-                    let xZ = xC;
-                    let yZ = yC;
-                    // Ajout écoute clic gauche
-                    document.getElementById(xCoord).addEventListener("click", function() {                                                  
-                        console.log
-                        // Création variable classList de l'élément
-                        let cls = document.getElementById(xCoord).classList;
-                        
-                        // Remplacement des classes
-                        switch (true) {
-                                case cls.contains('H') :
-                                    cls.remove('H');                                
-                                    if (cls.contains('X1')) {                                                                                                                                                      
-                                        for (let i = 0; i < bombQty; i++) {
-                                            document.getElementById(bombed[i]).classList.remove('X1')
-                                            document.getElementById(bombed[i]).classList.add('X2')
-                                        }
-                                    } else {
-                                        cls.add('S');
-                                    };  
-                                    if (cls.contains('zero')) {   
-                                        
-                                        let nArray =  [];
-
-                                        function checkaround(xZ, Yz) {
-
-                                            let xMin = xZ - 1;         
-                                            let xPlu = xZ + 1;
-                                            let yMin = yZ - 1;
-                                            let yPlu = yZ + 1;                                        
-                                            let nCoord;
-                                            let xMi = 'undefined';
-                                            let xPl = 'undefined';
-                                            let yMi = 'undefined';
-                                            let yPl = 'undefined';                    
-                                            if (xMin >= 0) {xMi = xMin;}                         
-                                            if (xPlu < cols) {xPl = xPlu;}                         
-                                            if (yMin >= 0) {yMi = yMin;}                        
-                                            if (yPlu < rows) {yPl = yPlu;} 
-                                            
-                                            if(xMi !== "undefined") {
-                                                nCoord = xMi + "," + yZ;
-                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
-                                                    nArray.push(xMi);
-                                                    nArray.push(yZ);
-                                                };
-                                                document.getElementById(nCoord).classList.remove('H');
-                                                document.getElementById(nCoord).classList.remove('F');
-                                                document.getElementById(nCoord).classList.remove('Q');
-                                                document.getElementById(nCoord).classList.add('S');
-                                            };
-                                                
-                                            if(xMi !== 'undefined' && yMi !== 'undefined') {
-                                                nCoord = xMi + "," + yMi;
-                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
-                                                    nArray.push(yMi);
-                                                    nArray.push(yZ);
-                                                }
-                                                document.getElementById(nCoord).classList.remove('H');
-                                                document.getElementById(nCoord).classList.remove('F');
-                                                document.getElementById(nCoord).classList.remove('Q');
-                                                document.getElementById(nCoord).classList.add('S');
-                                            };     
-                                                
-                                            if(xMi !==  'undefined' && yPl !== 'undefined') {
-                                                nCoord = xMi + "," + yPl;
-                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
-                                                    nArray.push(xMi);
-                                                    nArray.push(yPl);
-                                                }
-                                                document.getElementById(nCoord).classList.remove('H');
-                                                document.getElementById(nCoord).classList.remove('F');
-                                                document.getElementById(nCoord).classList.remove('Q');
-                                                document.getElementById(nCoord).classList.add('S');
-                                            };
-                        
-                                            if(xPl !== 'undefined') {
-                                                nCoord = xPl + "," + yZ;
-                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
-                                                    nArray.push(xPl);
-                                                    nArray.push(yZ);
-                                                }
-                                                document.getElementById(nCoord).classList.remove('H');
-                                                document.getElementById(nCoord).classList.remove('F');
-                                                document.getElementById(nCoord).classList.remove('Q');
-                                                document.getElementById(nCoord).classList.add('S');
-                                            };
-                        
-                                            if (xPl !== 'undefined' && yPl !== 'undefined') {
-                                                nCoord = xPl + "," + yPl;
-                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
-                                                    nArray.push(xPl);
-                                                    nArray.push(yPl);
-                                                }
-                                                document.getElementById(nCoord).classList.remove('H');
-                                                document.getElementById(nCoord).classList.remove('F');
-                                                document.getElementById(nCoord).classList.remove('Q');
-                                                document.getElementById(nCoord).classList.add('S');
-                                            };
-                        
-                                            if (xPl !== 'undefined' && yMi !== 'undefined') {
-                                                nCoord = xPl + "," + yMi;
-                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
-                                                    nArray.push(xPl);
-                                                    nArray.push(yMi);
-                                                }
-                                                document.getElementById(nCoord).classList.remove('H');
-                                                document.getElementById(nCoord).classList.remove('F');
-                                                document.getElementById(nCoord).classList.remove('Q');
-                                                document.getElementById(nCoord).classList.add('S');
-                                            };                   
-                                                
-                                            if (yPl !== 'undefined') {
-                                                nCoord = xZ + "," + yPl;                                                
-                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
-                                                    nArray.push(xZ);
-                                                    nArray.push(yPl);
-                                                }
-                                                document.getElementById(nCoord).classList.remove('H');
-                                                document.getElementById(nCoord).classList.remove('F');
-                                                document.getElementById(nCoord).classList.remove('Q');
-                                                document.getElementById(nCoord).classList.add('S');
-                                            };
-                        
-                                            if (yMi !== 'undefined') {
-                                                nCoord = xZ + "," + yMi;
-                                                if (document.getElementById(nCoord).classList.contains('zero') && !(document.getElementById(nCoord).classList.contains('S'))) {
-                                                    nArray.push(xZ);
-                                                    nArray.push(yMi);
-                                                }
-                                                document.getElementById(nCoord).classList.remove('H');
-                                                document.getElementById(nCoord).classList.remove('F');
-                                                document.getElementById(nCoord).classList.remove('Q');
-                                                document.getElementById(nCoord).classList.add('S');
-                                            };
-
-
-                                        };
-
-                                        checkaround(xZ, yZ);                                        
-
-                                        console.log(nArray)
-                                        
-                                        if (nArray.length > 0) {
-                                            for (i = 0; i < nArray.length ; i+2) {
-                                                let j = i + 1;
-                                                console.log( nArray[i] + " " + nArray[j]);
-                                                checkaround(nArray[i], nArray[j]);
-                                                nArray.shift();
-                                                nArray.shift();                                      
-                                            };
-                                        };
-                                    };
-                                
-
-                                                                                                                                                                                          
-                                    break;
-                                case cls.contains('S') : 
-                                    break;
-                                case cls.contains('F') :
-                                    cls.remove('F');
-                                    if (cls.contains('X1')) {                                                                                 
-                                        for (let i = 0; i < bombQty; i++) {
-                                            document.getElementById(bombed[i]).classList.remove('X1')
-                                            document.getElementById(bombed[i]).classList.add('X2')
-                                        }
-                                    } else {
-                                        cls.add('S');
-                                    };
-                                    break;
-                                case cls.contains('Q') :
-                                    cls.remove('Q');
-                                    var txt = document.getElementById(xCoord).getAttribute("class");
-                                    document.getElementById(xCoord).innerHTML = txt;                                
-                                    if (cls.contains('X1')) {
-                                        for (let i = 0; i < bombQty; i++) {
-                                            document.getElementById(bombed[i]).classList.remove('X1')
-                                            document.getElementById(bombed[i]).classList.add('X2')
-                                        }
-                                    } else {
-                                        cls.add('S');
-                                    };
-                                    break;
-                            
-                        }
-                    });
-                    
-                    // Ajout écoute clic droit
-                    document.getElementById(xCoord).addEventListener('contextmenu', function() {
-
-                        // Création variable classList de l'élément
-                        let cls = document.getElementById(xCoord).classList;
  
-                        // Remplacement des classes
+    // Demande niveau difficulté et chargement grille
+    start();
+
+    
+
+       
 
 
-                        switch (true) {
-                            case cls.contains('H') :
-                                cls.remove('H');
-                                cls.add('F');
-                                if (cls.contains("X1")) {
-                                    cls.remove('X1');
-                                    cls.add('X1');
-                                } 
-                                break;
-                            case cls.contains('S') : 
-                                break;
-                            case cls.contains('F') :
-                                cls.remove('F');
-                                cls.add('Q');
-                                document.getElementById(xCoord).innerHTML = "?"; 
-                                if (cls.contains("X1")) {
-                                    cls.remove('X1');
-                                    cls.add('X1');
-                                } 
-                                break;
-                            case cls.contains('Q') :
-                                cls.remove('Q');
-                                var txt = document.getElementById(xCoord).getAttribute("class");
-                                document.getElementById(xCoord).innerHTML = txt;
-                                cls.add('H');
-                                if (cls.contains("X1")) {
-                                    cls.remove('X1');
-                                    cls.add('X1');
-                                } 
-                                break;
-                        }
-                    });
-                })();
+    console.log(bombArray);
+       
 
 
-    var rClick = [];        
-    var locClick;                
-
-                     
-        };
-    }; 
 
 
-        
-        //Set grid CSS (cols + rows)
-        var width = cols * 40;
-        var height = rows * 40;
-        var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", minmax(40px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(40px, 1fr))";
-        document.getElementById("game").setAttribute("style", style);
 
 
-        //Determine bombQty
-        if(diff == "easy") {var diffRatio = 0.05} 
-        else if (diff == "medium") {var diffRatio = 0.1}
-        else {var diffRatio = 0.2}
-        var bombQty = Math.floor(diffRatio*(cells))
-        document.getElementById("mCounter").innerHTML = "<h3>Mines Left</h3><p id='left'>" + bombQty + "</p>";
 
 
-        //Init BOMBED array + counter
-        var bombed = [];
-        var n = 0;
 
-        //Loop set BOMBS!!       
-        while (n < bombQty) {
-            //Calculate x + y
-            var xBomb = Math.floor(Math.random() * cols);
-            var yBomb = Math.floor(Math.random() * rows);
-            //Format value
-            var bCoord = xBomb + "," + yBomb;
-            //Check not bombed already
-            if (!bombed.includes(bCoord)) {          
-                //Load coord. in bombed[]
-                bombed.push(bCoord);
-                //Set "X" value in grid
-                document.getElementById(bCoord).classList.add("X1");   
-                document.getElementById(bCoord).innerHTML = "X";             
-            } else {            
-                //Round + 1 if no bomb set
-                n--;
-            };             
-            //Incr. loop 
-            n++;   
-        };
+    console.log(gameArray);
 
-
-    //Add points in clear cells
-        // Scan x,y 
-        for (yCoord = 0; yCoord < rows; yCoord++) {
-            for (xCoord = 0; xCoord < cols; xCoord++) {
-                //If no bomb, calculate points
-                if(!(document.getElementById(xCoord + "," + yCoord).classList.contains("X"))) {
-                   //Calculate how many bombs around
-                        
-                    //Init neighbours var + array                                              
-                    var xMinus = xCoord - 1;         
-                    var xPlus = xCoord + 1;
-                    var yMinus = yCoord - 1;
-                    var yPlus = yCoord + 1;
-                    var score = 0;
-                    /*document.getElementById(xCoord + "," + yCoord).innerHTML = 0;*/
-                    var nCoord;
-                    var xM = 'undefined';
-                    var xP = 'undefined';
-                    var yM = 'undefined';
-                    var yP = 'undefined';                    
-                    if (xMinus >= 0) {var xM = xMinus;}                         
-                    if (xPlus < cols) {var xP = xPlus;}                         
-                    if (yMinus >= 0) {var yM = yMinus;}                        
-                    if (yPlus < rows) {var yP = yPlus;} 
-                        
-                    //Add points to score
-                    if(xM !== "undefined") {
-                        nCoord = xM + "," + yCoord;                                                 
-                        if(document.getElementById(nCoord).innerHTML =="X"){
-                            score += 1;
-                        };
-                    };
-                        
-                    if(xM !== 'undefined' && yM !== 'undefined') {
-                        nCoord = xM + "," + yM;                        
-                        if(document.getElementById(nCoord).innerHTML =="X"){
-                            score += 1;
-                        }; 
-                    };       
-                        
-                    if(xM !==  'undefined' && yP !== 'undefined') {
-                        nCoord = xM + "," + yP;                        
-                        if(document.getElementById(nCoord).innerHTML =="X"){
-                            score += 1;
-                        };
-                    };
-
-                    if(xP !== 'undefined') {
-                        nCoord = xP + "," + yCoord;                        
-                        if(document.getElementById(nCoord).innerHTML =="X"){
-                            score += 1;
-                        };
-                    };
-
-                    if (xP !== 'undefined' && yP !== 'undefined') {
-                        nCoord = xP + "," + yP;                        
-                        if(document.getElementById(nCoord).innerHTML =="X"){
-                            score += 1;
-                        };
-                    };
-
-                    if (xP !== 'undefined' && yM !== 'undefined') {
-                        nCoord = xP + "," + yM;                        
-                        if(document.getElementById(nCoord).innerHTML =="X"){
-                            score += 1;
-                        };
-                    };                   
-                        
-                    if (yP !== 'undefined') {
-                        nCoord = xCoord + "," + yP;
-                        if(document.getElementById(nCoord).innerHTML =="X"){
-                            score += 1;
-                        };
-                    };
-
-                    if (yM !== 'undefined') {
-                        nCoord = xCoord + "," + yM;
-                        if(document.getElementById(nCoord).innerHTML =="X"){
-                            score += 1;
-                        };
-                    };
-
-                    //write score in cell
-                    let textscore = ntt[score]
-                    
-                    if (!(document.getElementById(xCoord + "," + yCoord).classList.contains('X1'))) {
-                        document.getElementById(xCoord + "," + yCoord).classList.add(textscore);
-                    };
-                    
-                    var test = score > 0;
-                    
-                    if (test) {
-                        document.getElementById(xCoord + "," + yCoord).innerHTML = score;
-                    }; 
-                }; 
-            };
-        };
-    };
-
-    askLevel();
-
+    console.log(bombArray);
 
 
 });
-
-
-  
-   // Double boucle for process x + y 
-
-    /*  var yCoord = 0, yCoord = 0;
-            for (yCoord = 0; yCoord < 16; yCoord++) {
-        
-            for (xCoord = 0; xCoord < 16; xCoord++) {
-               
-            };
-        };
-    */
-
-    //GENERATE DIVS
-
-    /*  //Loop through Y
-        for (var yC = 0; yC < 16; yC++) {
-            //Loop through X
-            for (var xC = 0; xC < 16; xC++) {
-                //Format value
-                var allC = xC + "," + yC;
-                console.log("<div class='slot' id='" + allC + "'></div>");
-        };
-    };
-    */
-
-
-    //Clear grid
-    //  document.getElementById("game").innerHTML = "";
-
-
-
-
- 
-

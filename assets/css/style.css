@@ -65,6 +65,7 @@ body {
     text-align: center; 
     font-weight: bold;
     font-size: 30px;
+    animation: rotate 1s infinite linear;
 }
 
 .X2 {
@@ -76,6 +77,12 @@ body {
     color: rgba(0, 0, 0, 0);
 }
 
+/*
+.rotate {
+    
+    animation: rotate 3s infinite;
+}
+*/
 nav {
     display: grid;
     justify-content: center;
@@ -121,4 +128,21 @@ h3 {
     width: 100px;
     border: 1px solid rgb(61, 61, 61);;
     border-radius: 10px;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate3d(0);
+    }
+
+    50% {
+        transform: rotate3d(1, 1, 0, 180deg);
+    }
+
+    100% {
+        transform: rotate3d(1, 1, 0, 360deg);
+    }
+}
+
+
 
