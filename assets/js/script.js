@@ -14,6 +14,9 @@ let cols;       // nombre de colonnes de la grille
 let rows;       // nombre de lignes de la grille
 let cells;      // nombre de cellules de la grille
 
+var gameArray = [];
+var bombArray = [];
+
 let diff;       // difficulté de la partie
                 //  * "easy"
                 //  * "medium" 
@@ -22,7 +25,7 @@ let diff;       // difficulté de la partie
 let diffRatio;
                 
 const diffArray = ["easy", "medium", "hard"]; // Array choix difficulté
-const diffRatioArray = [0.1, 0.2, 0.3];
+const diffRatioArray = [0.05, 0.1, 0.2];
 
 // Phrases de confirmation lors de la sélection d'un niveau de difficulté
 const cPhrases = ["Difficulty level: EASY\nYou little coward baby!\nStill time to change your mind little pussy!",
@@ -38,11 +41,193 @@ var x = 0;
 var y = 0;
 
 
+function populateArray (arr, cols, rows) {
+    let ref = 0;
+    for (y = 0; y < cols; y++) {
+        for (x = 0; x < rows; x++) {
+            arr.push({
+                "x": x,
+                "y": y,
+                "val": 0,
+                "status": "H",
+                "isBomb": false,
+                "ref": ref
+            });  
+            ref++;              
+        }    
+    }
+}
+
+
+function setBombs(diffRatio) {
+    var bombQty = Math.floor(cells*diffRatio);
+    for (let j = 0; j < bombQty ; j++) {            
+        index = Math.floor(Math.random()*256);
+        if (gameArray[index].isBomb == true) {
+            j--;
+        } else {
+            gameArray[index].isBomb = true;
+            gameArray[index].val = undefined;
+            bombArray.push(gameArray[index]); 
+            var filtSurr = getSurrounderIndex(index);
+            var filtArrLen = filtSurr.length;
+            for (let k = 0; k < filtArrLen; k++) {
+                if (!gameArray[filtSurr[k]].isBomb) {
+                    gameArray[filtSurr[k]].val += 1;
+                }
+            };
+        }
+    }
+    document.getElementById("mCounter").innerHTML = bombQty;
+}
+
+
+function injectGrid () {
+
+    for (let id = 0; id < cells; id++) {
+
+        var div = document.createElement("div");
+        var game = document.getElementById("game"); 
+
+        game.appendChild(div);
+        
+        div.id = "id" + id;
+        div.classList.add("H");
+        
+        let divid = "id" + id;
+        let slot = document.getElementById(divid)
+
+        if (!gameArray[id].val == 0) {
+            slot.innerHTML = gameArray[id].val; 
+        } else if (gameArray[id].isBomb) {
+            slot.innerHTML = "X" ;
+        } 
+
+        lClick(divid, id);               
+    }
+}       
+
+
+function setGridCSS() {
+    
+    //Set grid CSS (cols + rows)
+    var width = cols * 40;
+    var height = rows * 40;
+    var style = "width: " + width + "px; height: " + height + "px; grid-template-columns: repeat(" + cols + ", minmax(40px, 1fr)); grid-template-rows: repeat(" + rows +", minmax(40px, 1fr))";
+    document.getElementById("game").setAttribute("style", style);
+}
+
+
+function getSurrounderIndex(index) {
+    let xCoord = gameArray[index].x;
+    let yCoord = gameArray[index].y;
+    let surrounderArray = []
+    let obj1 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord-1));
+    let obj2 = gameArray.find(obj => obj.x === xCoord && obj.y === (yCoord-1));
+    let obj3 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === (yCoord-1));
+    let obj4 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === yCoord);
+    let obj5 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === (yCoord+1));
+    let obj6 = gameArray.find(obj => obj.x === xCoord && obj.y === (yCoord+1));
+    let obj7 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord+1));
+    let obj8 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === yCoord);
+    let ind1 = gameArray.indexOf(obj1);
+    let ind2 = gameArray.indexOf(obj2);
+    let ind3 = gameArray.indexOf(obj3);
+    let ind4 = gameArray.indexOf(obj4);
+    let ind5 = gameArray.indexOf(obj5);
+    let ind6 = gameArray.indexOf(obj6);
+    let ind7 = gameArray.indexOf(obj7);
+    let ind8 = gameArray.indexOf(obj8);
+    surrounderArray.push(ind1);
+    surrounderArray.push(ind2);
+    surrounderArray.push(ind3);
+    surrounderArray.push(ind4);
+    surrounderArray.push(ind5);
+    surrounderArray.push(ind6);
+    surrounderArray.push(ind7);
+    surrounderArray.push(ind8);        
+    //Enlever les -1(coord hors grille)
+    var filtSurr = surrounderArray.filter(function(element) {
+        return element !== -1;
+    });
+    return filtSurr;
+    
+}
+
+function start() {
+
+    // Injecte les boutons dans la balise level
+    document.getElementById("level").innerHTML = levbtns;        
+    // Boucle dans l'array de difficulté
+    for (let i = 0; i < 3; i++ ) {
+        // Ajout écoute boutons
+        document.getElementById(diffArray[i]).addEventListener("click", function() {
+            // Au clic, demande confirmation
+            if(confirm(cPhrases[i])) {    
+                // stocke niveau choisi
+                diff = diffArray[i];
+                diffRatio = diffRatioArray[i];
+                // Nettoye la balise level
+                document.getElementById("level").innerHTML = "";     
+                // Créer l'array 
+                populateArray(gameArray, cols, rows);
+                // Mettre les mines
+                setBombs(diffRatio);    
+                // Exécute fonction InjectGrid
+                injectGrid();      
+                // Exécute fct setGridCSS
+                setGridCSS();   
+            };
+        });
+    }
+};
+
+
+function lClick(divid, idx) {
+    
+    document.getElementById(divid).addEventListener("click", function cList() { 
+
+        if (gameArray[idx].isBomb) {
+
+            for (let k = 0; k < bombArray.length ; k++) {
+
+                let divid = "id"+ bombArray[k].ref;
+                document.getElementById(divid).classList.add('X2');
+                document.getElementById(divid).classList.remove('H');
+                document.getElementById(divid).classList.remove('F');
+                document.getElementById(divid).classList.remove('Q');
+
+            }
+           
+
+        } else if (gameArray[idx].val == 0) {
+
+            let divid = "id" + idx
+            document.getElementById(divid).classList.add('S');
+            document.getElementById(divid).classList.remove('H');
+            document.getElementById(divid).classList.remove('F');
+            document.getElementById(divid).classList.remove('Q');
+
+        } else {
+            let divid = "id" + idx
+            document.getElementById(divid).classList.add('S');
+            document.getElementById(divid).classList.remove('H');
+            document.getElementById(divid).classList.remove('F');
+            document.getElementById(divid).classList.remove('Q');
+        }
+    });    
+}
+
+
+
+
+
+
 //------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------GAME
 
 
-// Lancement d'une partie via bouton
+// Lancement d'une partie via bouton START
 document.getElementById("new").addEventListener("click", function() {
 
             
@@ -50,126 +235,27 @@ document.getElementById("new").addEventListener("click", function() {
     document.getElementById("game").innerHTML = "";
     
     
-    // Demnande taille grille
+    // Demande taille grille
     cols = prompt('Set colums qty',16);
     rows = prompt('Set rows qty',16);
     cells = cols*rows;
-    var gameArray = [];
-    var bombArray = [];
+ 
+    // Demande niveau difficulté et chargement grille
+    start();
 
-    function populateArray (arr, cols, rows) {
-        for (y = 0; y < cols; y++) {
-            for (x = 0; x < rows; x++) {
-                arr.push({
-                    "x": x,
-                    "y": y,
-                    "val": 0,
-                    "isBomb": false
-                });                
-            }    
-        }
-    }
 
-    function setBombs(diffRatio) {
-        var bombQty = Math.floor(cells*diffRatio);
-        for (let j = 0; j < bombQty ; j++) {            
-            index = Math.floor(Math.random()*256);
-            if (gameArray[index].isBomb == true) {
-                j--;
-            } else {
-                gameArray[index].isBomb = true;
-                bombArray.push(gameArray[index]); 
-                var filtSurr = getSurrounderIndex(index);
-                var filtArrLen = filtSurr.length;
-                for (let k = 0; k < filtArrLen; k++) {
-                    gameArray[filtSurr[k]].val += 1;
-  
-                };
-            }
-        }
-        document.getElementById("mCounter").innerHTML = bombQty;
-    }
 
-    function getSurrounderIndex(index) {
-        let xCoord = gameArray[index].x;
-        let yCoord = gameArray[index].y;
-        let surrounderArray = []
-        let obj1 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord-1));
-        let obj2 = gameArray.find(obj => obj.x === xCoord && obj.y === (yCoord-1));
-        let obj3 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === (yCoord-1));
-        let obj4 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === yCoord);
-        let obj5 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === (yCoord+1));
-        let obj6 = gameArray.find(obj => obj.x === xCoord && obj.y === (yCoord+1));
-        let obj7 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord+1));
-        let obj8 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === yCoord);
-        let ind1 = gameArray.indexOf(obj1);
-        let ind2 = gameArray.indexOf(obj2);
-        let ind3 = gameArray.indexOf(obj3);
-        let ind4 = gameArray.indexOf(obj4);
-        let ind5 = gameArray.indexOf(obj5);
-        let ind6 = gameArray.indexOf(obj6);
-        let ind7 = gameArray.indexOf(obj7);
-        let ind8 = gameArray.indexOf(obj8);
-        surrounderArray.push(ind1);
-        surrounderArray.push(ind2);
-        surrounderArray.push(ind3);
-        surrounderArray.push(ind4);
-        surrounderArray.push(ind5);
-        surrounderArray.push(ind6);
-        surrounderArray.push(ind7);
-        surrounderArray.push(ind8);        
-        //Enlever les -1(coord hors grille)
-        var filtSurr = surrounderArray.filter(function(element) {
-            return element !== -1;
-        });
-        return filtSurr;
-        
-    }
 
-    function injectGrid () {
+    console.log(bombArray);
+       
 
-        for (let id = 0; id < cells; id++) {
-            
-            var div = document.createElement("div");
-            var game = document.getElementById("game"); 
-            game.appendChild(div);
-            div.id = "id" + id;
-            let divid = "id" + id;
-            document.getElementById(divid).innerHTML = gameArray[id].val;        
-        }
 
-    }       
 
-    function askLevel() {
 
-        // Injecte les boutons dans la balise level
-        document.getElementById("level").innerHTML = levbtns;
-        
-        // Boucle dans l'array de difficulté
-        for (let i = 0; i < 3; i++ ) {
-            // Ajout écoute boutons
-            document.getElementById(diffArray[i]).addEventListener("click", function() {
-                // Au clic, demande confirmation
-                if(confirm(cPhrases[i])) {    
-                    // stocke niveau choisi
-                    diff = diffArray[i];
-                    diffRatio = diffRatioArray[i];
-                    // Nettoye la balise level
-                    document.getElementById("level").innerHTML = "";
-                    // Créer l'array 
-                    populateArray(gameArray, cols, rows);
-                    // Mettre les mines
-                    setBombs(diffRatio);                  
-                    // Exécute fonction InjectGrid
-                   // injectGrid();      
 
-          
-                };
-            });
-        }
-    };
 
-    askLevel();
+
+
 
     console.log(gameArray);
 
