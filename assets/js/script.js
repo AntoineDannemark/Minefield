@@ -79,6 +79,12 @@ document.getElementById("new").addEventListener("click", function() {
             } else {
                 gameArray[index].isBomb = true;
                 bombArray.push(gameArray[index]); 
+                getSurrounderIndex(index)
+                var filtSurr = getSurrounderIndex(index);
+                var filtArrLen = filtSurr.length;
+                for (let j = 0; j < filtArrLen; j++) {
+                    gameArray[filtSurr[j]].val += 1;
+                };
             }
         }
         document.getElementById("mCounter").innerHTML = bombQty;
@@ -87,24 +93,39 @@ document.getElementById("new").addEventListener("click", function() {
     function getSurrounderIndex(index) {
         let xCoord = gameArray[index].x;
         let yCoord = gameArray[index].y;
-        console.log(xCoord, yCoord);
-        let obj = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord-1));
-        let ind = gameArray.indexO-     aaqsqQQ
-        f(obj);
         let surrounderArray = []
-        surrounderArray.push(ind); 
-        console.log(surrounderArray);
+        let obj1 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord-1));
+        let obj2 = gameArray.find(obj => obj.x === xCoord && obj.y === (yCoord-1));
+        let obj3 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === (yCoord-1));
+        let obj4 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === yCoord);
+        let obj5 = gameArray.find(obj => obj.x === (xCoord+1) && obj.y === (yCoord+1));
+        let obj6 = gameArray.find(obj => obj.x === xCoord && obj.y === (yCoord+1));
+        let obj7 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === (yCoord+1));
+        let obj8 = gameArray.find(obj => obj.x === (xCoord-1) && obj.y === yCoord);
+        let ind1 = gameArray.indexOf(obj1);
+        let ind2 = gameArray.indexOf(obj2);
+        let ind3 = gameArray.indexOf(obj3);
+        let ind4 = gameArray.indexOf(obj4);
+        let ind5 = gameArray.indexOf(obj5);
+        let ind6 = gameArray.indexOf(obj6);
+        let ind7 = gameArray.indexOf(obj7);
+        let ind8 = gameArray.indexOf(obj8);
+        surrounderArray.push(ind1);
+        surrounderArray.push(ind2);
+        surrounderArray.push(ind3);
+        surrounderArray.push(ind4);
+        surrounderArray.push(ind5);
+        surrounderArray.push(ind6);
+        surrounderArray.push(ind7);
+        surrounderArray.push(ind8);
+        //Enlever les -1(coord hors grille)
+        var filtSurr = surrounderArray.filter(function(element) {
+            return element !== -1;
+        });
+        return filtSurr;
     }
 
     /*
-    function calculatePoints () {        
-        bombArray.forEach(element => {
-
-            }
-        });
-
-    }
-
     function injectGrid () {
 
     }   
@@ -132,8 +153,7 @@ document.getElementById("new").addEventListener("click", function() {
                     setBombs(diffRatio);                  
                     // Exécute fonction InjectGrid
                     //injectGrid();      
-                    
-                    getSurrounderIndex(39);
+
           
                 };
             });
