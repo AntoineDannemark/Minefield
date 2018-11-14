@@ -14,8 +14,6 @@ let cols;       // nombre de colonnes de la grille
 let rows;       // nombre de lignes de la grille
 let cells;      // nombre de cellules de la grille
 
-var gameArray = [];
-var bombArray = [];
 
 let diff;       // difficulté de la partie
                 //  * "easy"
@@ -62,7 +60,7 @@ function populateArray (arr, cols, rows) {
 function setBombs(diffRatio) {
     var bombQty = Math.floor(cells*diffRatio);
     for (let j = 0; j < bombQty ; j++) {            
-        index = Math.floor(Math.random()*256);
+        index = Math.floor(Math.random()*cells);
         if (gameArray[index].isBomb == true) {
             j--;
         } else {
@@ -102,8 +100,8 @@ function injectGrid () {
         } else if (gameArray[id].isBomb) {
             slot.innerHTML = "X" ;
         } 
-
-        lClick(divid, id);               
+        lClick(divid, id);
+        rClick (divid, id);
     }
 }       
 
@@ -156,6 +154,9 @@ function getSurrounderIndex(index) {
 
 function start() {
 
+    gameArray = [];
+    bombArray = [];    
+    
     // Injecte les boutons dans la balise level
     document.getElementById("level").innerHTML = levbtns;        
     // Boucle dans l'array de difficulté
@@ -183,9 +184,17 @@ function start() {
 };
 
 
+
+
+
+
+
+
+
+
 function lClick(divid, idx) {
     
-    document.getElementById(divid).addEventListener("click", function cList() { 
+    document.getElementById(divid).addEventListener("click", function () { 
 
         if (gameArray[idx].isBomb) {
 
@@ -196,7 +205,6 @@ function lClick(divid, idx) {
                 document.getElementById(divid).classList.remove('H');
                 document.getElementById(divid).classList.remove('F');
                 document.getElementById(divid).classList.remove('Q');
-
             }
            
 
@@ -207,6 +215,8 @@ function lClick(divid, idx) {
             document.getElementById(divid).classList.remove('H');
             document.getElementById(divid).classList.remove('F');
             document.getElementById(divid).classList.remove('Q');
+            
+            removeZeros(idx);
 
         } else {
             let divid = "id" + idx
@@ -214,12 +224,93 @@ function lClick(divid, idx) {
             document.getElementById(divid).classList.remove('H');
             document.getElementById(divid).classList.remove('F');
             document.getElementById(divid).classList.remove('Q');
+            document.getElementById(divid).innerHTML = gameArray[idx].val;
         }
     });    
 }
 
+function rClick (divid, id) {
 
+    document.getElementById(divid).addEventListener('contextmenu', function() {
 
+        // Création variable classList de l'élément
+        let cls = document.getElementById(divid).classList;
+ 
+        // Remplacement des classes
+
+        switch (true) {
+            case cls.contains('H') :
+                cls.remove('H');
+                cls.add('F');
+                if (cls.contains("X1")) {
+                    cls.remove('X1');
+                    cls.add('X1');
+                } 
+                break;
+            case cls.contains('S') : 
+                break;
+            case cls.contains('F') :
+                cls.remove('F');
+                cls.add('Q');
+                document.getElementById(divid).innerHTML = "?"; 
+                if (cls.contains("X1")) {
+                    cls.remove('X1');
+                    cls.add('X1');
+                } 
+                break;
+            case cls.contains('Q') :
+                cls.remove('Q');
+                if (gameArray[id].val !== 0) {
+                    var txt = gameArray[id].val;
+                } else {
+                        var txt = "";
+                }
+                
+                document.getElementById(divid).innerHTML = txt;
+                cls.add('H');
+                if (cls.contains("X1")) {
+                    cls.remove('X1');
+                    cls.add('X1');
+                } 
+                break;
+        }
+    });
+
+}
+
+function removeZeros(idx) {
+
+    var filtsurr = getSurrounderIndex(idx)
+
+    for (let i = 0; i < filtsurr.length; i++) {
+
+        if (gameArray[filtsurr[i]].status !== 'S' && gameArray[filtsurr[i]].val == 0) {
+            
+            gameArray[filtsurr[i]].status = 'S';
+            
+            let divid = 'id' + gameArray[filtsurr[i]].ref
+            
+            document.getElementById(divid).classList.add('S');
+            document.getElementById(divid).classList.remove('H');
+            document.getElementById(divid).classList.remove('F');
+            document.getElementById(divid).classList.remove('Q');
+            document.getElementById(divid).innerHTML = "";
+            
+            removeZeros(gameArray[filtsurr[i]].ref);
+
+        } else if (gameArray[filtsurr[i]].status !== 'S' && gameArray[filtsurr[i]].val !== undefined) {
+            
+            let divid = 'id' + gameArray[filtsurr[i]].ref
+            
+            document.getElementById(divid).classList.add('S');
+            document.getElementById(divid).classList.remove('H');
+            document.getElementById(divid).classList.remove('F');
+            document.getElementById(divid).classList.remove('Q');
+            document.getElementById(divid).innerHTML = gameArray[filtsurr[i]].val
+        }
+    }
+
+}
 
 
 
@@ -243,7 +334,9 @@ document.getElementById("new").addEventListener("click", function() {
     // Demande niveau difficulté et chargement grille
     start();
 
+    
 
+       
 
 
     console.log(bombArray);
