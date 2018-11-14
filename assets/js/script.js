@@ -198,6 +198,7 @@ function lClick(divid, idx) {
 
         if (gameArray[idx].isBomb) {
 
+
             for (let k = 0; k < bombArray.length ; k++) {
 
                 let divid = "id"+ bombArray[k].ref;
