@@ -165,6 +165,7 @@ function getSurrounderIndex(index) {
 //let div = document.createElement("div");
 //div.id = "level";
 
+
 function start() {
     
     gameArray = [];
@@ -359,26 +360,57 @@ function removeZeros(idx) {
 
 
 
+var alt = true;
+
+var lo = 10
+
 function anime() {
 
     let len = animArray.length;
-    console.log("len = " + len);
-   
+
     let id = Math.floor(Math.random()*len)
-    console.log("id = " + id);
     
     let divid = "id" + animArray[id];
 
     animArray.splice(id, 1);
-    console.log(animArray);    
 
     if (len > 0) {
-        document.getElementById(divid).classList.add('anim');
-        setTimeout (function () {               
-            anime();
-        }, 1);        
+
+        if (alt) {
+
+            document.getElementById(divid).classList.add('animLeft');
+            alt =!alt;            
+            setTimeout (function () {               
+                anime();
+            }, (Math.log(lo)*3));
+            console.log(lo);
+            console.log(Math.log(lo));
+
+            lo+=10
+
+        }
+            
+        else {
+
+            document.getElementById(divid).classList.add('animRight');
+            alt =!alt;
+            setTimeout (function () {               
+                anime();
+            }, (Math.log(lo)*3));
+            console.log(lo);
+            console.log(Math.log(lo));
+            lo+=10
+            console.log(lo);
+
+        }
     }     
 }  
+
+
+
+
+
+
 
 
 //------------------------------------------------------------------------------------------------------------------------------------
