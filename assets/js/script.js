@@ -38,6 +38,9 @@ const levbtns = "<button class='btn' style='width: 200px' id='easy'> - - EASY - 
 var x = 0;
 var y = 0;
 
+var gameArray = [];
+var bombArray = [];        
+var bombQty = 0;
 
 function populateArray (arr, cols, rows) {
     let ref = 0;
@@ -59,7 +62,6 @@ function populateArray (arr, cols, rows) {
 
 
 function setBombs(diffRatio) {
-    var bombQty = Math.floor(cells*diffRatio);
     for (let j = 0; j < bombQty ; j++) {            
         index = Math.floor(Math.random()*cells);
         if (gameArray[index].isBomb == true) {
@@ -78,6 +80,7 @@ function setBombs(diffRatio) {
         }
     }
     document.getElementById("mCounter").innerHTML = bombQty;
+
 }
 
 
@@ -173,6 +176,7 @@ function start() {
                 // stocke niveau choisi
                 diff = diffArray[i];
                 diffRatio = diffRatioArray[i];
+                bombQty = Math.floor(cells*diffRatio);
                 // Nettoye la balise level
                 document.getElementById("level").innerHTML = "";     
                 // Créer l'array 
@@ -194,23 +198,39 @@ function lClick(divid, idx) {
     let cls = document.getElementById(divid).classList;
     document.getElementById(divid).addEventListener("click", function () { 
         if(gameArray[idx].listen && !cls.contains('F') && !cls.contains('Q')) {
+            
             if (gameArray[idx].isBomb) {
+                
                 for (let k = 0; k < bombArray.length ; k++) {
-                    let divid = "id"+ bombArray[k].ref;
-                    document.getElementById(divid).classList.add('X2');
-                    document.getElementById(divid).classList.remove('H');
-                    document.getElementById(divid).classList.remove('F');
-                    document.getElementById(divid).classList.remove('Q');
+                    
+                    let divid1 = "id"+ bombArray[k].ref;
+                    
+                    if (divid1 !== divid) {
+
+                        document.getElementById(divid1).classList.add('X2');
+                        document.getElementById(divid1).classList.remove('H');
+                        document.getElementById(divid1).classList.remove('F');
+                        document.getElementById(divid1).classList.remove('Q');
+
+                    }
                 }          
+                
+                cls.add('X3')
+                cls.remove('H');
+                cls.remove('F');
+                cls.remove('Q'); 
+
                 for (let l = 0; l < cells; l++) {
                     gameArray[l].listen = false; 
                 }
+
             } else if (gameArray[idx].val == 0) {
                 let divid = "id" + idx
                 cls.add('S');
                 cls.remove('H');
                 cls.remove('F');
-                cls.remove('Q');               
+                cls.remove('Q');  
+                gameArray[idx].status = "S";               
                 removeZeros(idx);
             } else {
                 let divid = "id" + idx
@@ -218,11 +238,13 @@ function lClick(divid, idx) {
                 cls.remove('H');
                 cls.remove('F');
                 cls.remove('Q');
+                gameArray[idx].status = "S";  
                 document.getElementById(divid).innerHTML = gameArray[idx].val;
             }
         } else if (gameArray[idx].listen && cls.contains('Q')) {
             cls.remove('Q');
             cls.add('H');
+            gameArray[idx].status = "H";  
             if (gameArray[idx].val !== 0) {
                 var txt = gameArray[idx].val;
             } else {
@@ -244,21 +266,24 @@ function rClick (divid, id) {
                 case cls.contains('H') :
                     cls.remove('H');
                     cls.add('F');
-                    if (cls.contains("X1")) {
-                        cls.remove('X1');
-                        cls.add('X1');
-                    } 
+                    bombQty -=1;
+                    document.getElementById("mCounter").innerHTML = bombQty;
+                    gameArray[id].status = "F";                
                     break;
                 case cls.contains('S') : 
                     break;
                 case cls.contains('F') :
                     cls.remove('F');
                     cls.add('Q');
+                    bombQty +=1;
+                    document.getElementById("mCounter").innerHTML = bombQty;
+                    gameArray[id].status = "Q";  
                     document.getElementById(divid).innerHTML = "?"; 
                     break;
                 case cls.contains('Q') :
                     cls.remove('Q');
                     cls.add('H');
+                    gameArray[id].status = "H";  
                     if (gameArray[id].val !== 0) {
                         var txt = gameArray[id].val;
                     } else {
@@ -295,7 +320,15 @@ function removeZeros(idx) {
     }
 }
 
+/*
+function anime() {
+    for (let id = cells; id <= 0 ;id--) {
+        let divid = "id" + id;
+        document.getElementById(divid).classList.add(anim)
+    }
 
+}  
+*/
 
 //------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------GAME
@@ -314,4 +347,8 @@ document.getElementById("new").addEventListener("click", function() {
  
     // Demande niveau difficulté et chargement grille
     start();
+
+    console.log(bombArray);
+    console.log(gameArray);
+
 });

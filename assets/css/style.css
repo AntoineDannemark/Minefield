@@ -23,7 +23,6 @@ body {
     justify-content: center;
     position: relative;
     opacity: 0.9;
-    rgb(41, 38, 38)
 }
 
 .H {
@@ -36,6 +35,10 @@ body {
     overflow: hidden;
 }
 
+anim {
+    animation: fall 2s linear;
+}
+
 .S {
     width: 40px;
     height: 40px;
@@ -44,7 +47,7 @@ body {
     background-image: radial-gradient(circle at center, rgb(110, 100, 100) 35%, rgb(110, 101, 101));
     text-align: center;    
     font-weight: bold;
-    font-size: 30px;
+    font-size: 30px; 
 }
 
 .one {
@@ -96,18 +99,19 @@ body {
 .X2 {
     width: 40px;
     height: 40px;
-    border: 1px solid rgb(73, 73, 73);
-    border-radius: 10px;
-    background-image: radial-gradient(circle at center, black, red);
+    border-radius: 20px;
+    background-image: radial-gradient(circle at center, black, red, transparent 70%);
     color: rgba(0, 0, 0, 0);
 }
 
-/*
-.rotate {
-    
-    animation: rotate 3s infinite;
+.X3 {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    color: rgba(0, 0, 0, 0);
+    animation: explode 1s infinite linear;
 }
-*/
+
 nav {
     display: grid;
     justify-content: center;
@@ -169,5 +173,31 @@ h3 {
     }
 }
 
+@keyframes explode {
+    0% {
+        background-image: radial-gradient(circle at center, black, red, transparent 70%);
+    }
 
+    50% {
+        background-image: radial-gradient(circle at center, red, black, transparent 70%);
+    }
+
+    100% {
+        background-image: radial-gradient(circle at center, black, red, transparent 70%);
+    }
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-300px);
+    }
+
+    50% {
+        transform: translateY(-150px) rotate(180deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(360deg);
+    }
+}
 
