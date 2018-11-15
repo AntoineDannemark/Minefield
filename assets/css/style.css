@@ -2,6 +2,7 @@ body {
     background-attachment: fixed;
     background-image: url("../img/bg.JPG");
     background-size: cover;
+    background-position: center;
     background-repeat: no-repeat; 
     /* empêcher sélection texte dans slots */ 
     -webkit-touch-callout: none; /* iOS Safari */
@@ -17,7 +18,7 @@ body {
     width: 1200px;
     height: 800px;
     margin: auto;
-    margin-bottom: 50px;
+
     display: grid;
     align-items: center;
     justify-content: center;
@@ -133,8 +134,9 @@ nav {
     justify-content: center;
     grid-template-columns: 0.5fr, 0.5fr, 1fr, 1fr;
     grid-template-areas: "cnt txt btn .";
-    margin-bottom: 70px;
     margin-top: 50px;
+    margin-bottom: 70px;
+
 }
 
 #level { 
