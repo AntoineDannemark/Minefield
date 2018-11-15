@@ -1,6 +1,6 @@
 body {
     background-attachment: fixed;
-    background-image: url(Minefield/assets/img/bg.JPG);
+    background-image: url(https://github.com/AntoineDannemark/Minefield/blob/master/assets/img/bg.JPG);
     background-size: 100%;
     background-repeat: no-repeat; 
     /* empêcher sélection texte dans slots */ 
