@@ -1,6 +1,6 @@
 body {
     background-attachment: fixed;
-    background-image: url("../img/bg.jpg");
+    background-image: url(../img/bg.JPG);
     background-size: 100%;
     background-repeat: no-repeat; 
     /* empêcher sélection texte dans slots */ 
@@ -23,7 +23,7 @@ body {
     justify-content: center;
     position: relative;
     opacity: 0.9;
-
+    rgb(41, 38, 38)
 }
 
 .H {
@@ -32,7 +32,8 @@ body {
     border: 1px solid rgb(73, 73, 73);
     border-radius: 10px;
     background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
-    color: rgba(0, 0, 0, 0);
+    text-indent: 100%;
+    overflow: hidden;
 }
 
 .S {
@@ -40,10 +41,34 @@ body {
     height: 40px;
     border: 1px solid rgb(61, 61, 61);;
     border-radius: 10px;
-    background-image: radial-gradient(circle at center, rgb(94, 87, 87) 35%, rgb(90, 82, 82));
+    background-image: radial-gradient(circle at center, rgb(110, 100, 100) 35%, rgb(110, 101, 101));
     text-align: center;    
     font-weight: bold;
     font-size: 30px;
+}
+
+.one {
+    color: rgb(28, 28, 165);
+}
+
+.two {
+    color: rgb(10, 100, 10);
+}
+
+.three {
+    color: rgb(202, 13, 13);
+}
+
+.four {
+    color: rgb(19, 19, 133);
+}
+
+.five {
+    color: rgb(128, 8, 8);
+}
+
+.six {
+    color: rgb(63, 5, 5);
 }
 
 .F {

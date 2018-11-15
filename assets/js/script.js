@@ -49,7 +49,8 @@ function populateArray (arr, cols, rows) {
                 "val": 0,
                 "status": "H",
                 "isBomb": false,
-                "ref": ref
+                "ref": ref,
+                "listen" : true
             });  
             ref++;              
         }    
@@ -80,34 +81,40 @@ function setBombs(diffRatio) {
 }
 
 
-function injectGrid () {
-
+function injectGrid() {
     for (let id = 0; id < cells; id++) {
-
         var div = document.createElement("div");
-        var game = document.getElementById("game"); 
-
-        game.appendChild(div);
-        
+        var game = document.getElementById("game");
+        game.appendChild(div);       
         div.id = "id" + id;
-        div.classList.add("H");
-        
+        div.classList.add("H");      
         let divid = "id" + id;
         let slot = document.getElementById(divid)
-
         if (!gameArray[id].val == 0) {
-            slot.innerHTML = gameArray[id].val; 
+            slot.innerHTML = gameArray[id].val;            
+            if (gameArray[id].val == 1) {
+                slot.classList.add('one');
+            } else if (gameArray[id].val == 2) {
+                slot.classList.add('two');
+            } else if (gameArray[id].val == 3) {
+                slot.classList.add('three');
+            } else if (gameArray[id].val == 4) {
+                slot.classList.add('four');
+            } else if (gameArray[id].val == 5) {
+                slot.classList.add('five');
+            } else if (gameArray[id].val == 6) {
+                slot.classList.add('six');
+            };            
         } else if (gameArray[id].isBomb) {
             slot.innerHTML = "X" ;
-        } 
-        lClick(divid, id);
+        } ;
+        lClick(divid, id);        
         rClick (divid, id);
     }
 }       
 
 
-function setGridCSS() {
-    
+function setGridCSS() {   
     //Set grid CSS (cols + rows)
     var width = cols * 40;
     var height = rows * 40;
@@ -148,15 +155,13 @@ function getSurrounderIndex(index) {
     var filtSurr = surrounderArray.filter(function(element) {
         return element !== -1;
     });
-    return filtSurr;
-    
+    return filtSurr;    
 }
 
-function start() {
 
+function start() {
     gameArray = [];
-    bombArray = [];    
-    
+    bombArray = [];        
     // Injecte les boutons dans la balise level
     document.getElementById("level").innerHTML = levbtns;        
     // Boucle dans l'array de difficulté
@@ -178,131 +183,109 @@ function start() {
                 injectGrid();      
                 // Exécute fct setGridCSS
                 setGridCSS();   
+                
             };
         });
     }
 };
 
 
-
-
-
-
-
-
-
-
-function lClick(divid, idx) {
-    
+function lClick(divid, idx) {    
+    let cls = document.getElementById(divid).classList;
     document.getElementById(divid).addEventListener("click", function () { 
-
-        if (gameArray[idx].isBomb) {
-
-
-            for (let k = 0; k < bombArray.length ; k++) {
-
-                let divid = "id"+ bombArray[k].ref;
-                document.getElementById(divid).classList.add('X2');
-                document.getElementById(divid).classList.remove('H');
-                document.getElementById(divid).classList.remove('F');
-                document.getElementById(divid).classList.remove('Q');
+        if(gameArray[idx].listen && !cls.contains('F') && !cls.contains('Q')) {
+            if (gameArray[idx].isBomb) {
+                for (let k = 0; k < bombArray.length ; k++) {
+                    let divid = "id"+ bombArray[k].ref;
+                    document.getElementById(divid).classList.add('X2');
+                    document.getElementById(divid).classList.remove('H');
+                    document.getElementById(divid).classList.remove('F');
+                    document.getElementById(divid).classList.remove('Q');
+                }          
+                for (let l = 0; l < cells; l++) {
+                    gameArray[l].listen = false; 
+                }
+            } else if (gameArray[idx].val == 0) {
+                let divid = "id" + idx
+                cls.add('S');
+                cls.remove('H');
+                cls.remove('F');
+                cls.remove('Q');               
+                removeZeros(idx);
+            } else {
+                let divid = "id" + idx
+                cls.add('S');
+                cls.remove('H');
+                cls.remove('F');
+                cls.remove('Q');
+                document.getElementById(divid).innerHTML = gameArray[idx].val;
             }
-           
-
-        } else if (gameArray[idx].val == 0) {
-
-            let divid = "id" + idx
-            document.getElementById(divid).classList.add('S');
-            document.getElementById(divid).classList.remove('H');
-            document.getElementById(divid).classList.remove('F');
-            document.getElementById(divid).classList.remove('Q');
-            
-            removeZeros(idx);
-
-        } else {
-            let divid = "id" + idx
-            document.getElementById(divid).classList.add('S');
-            document.getElementById(divid).classList.remove('H');
-            document.getElementById(divid).classList.remove('F');
-            document.getElementById(divid).classList.remove('Q');
-            document.getElementById(divid).innerHTML = gameArray[idx].val;
+        } else if (gameArray[idx].listen && cls.contains('Q')) {
+            cls.remove('Q');
+            cls.add('H');
+            if (gameArray[idx].val !== 0) {
+                var txt = gameArray[idx].val;
+            } else {
+                    var txt = "";
+            }                    
+            document.getElementById(divid).innerHTML = txt; 
         }
     });    
 }
 
+
 function rClick (divid, id) {
-
     document.getElementById(divid).addEventListener('contextmenu', function() {
-
-        // Création variable classList de l'élément
-        let cls = document.getElementById(divid).classList;
- 
-        // Remplacement des classes
-
-        switch (true) {
-            case cls.contains('H') :
-                cls.remove('H');
-                cls.add('F');
-                if (cls.contains("X1")) {
-                    cls.remove('X1');
-                    cls.add('X1');
-                } 
-                break;
-            case cls.contains('S') : 
-                break;
-            case cls.contains('F') :
-                cls.remove('F');
-                cls.add('Q');
-                document.getElementById(divid).innerHTML = "?"; 
-                if (cls.contains("X1")) {
-                    cls.remove('X1');
-                    cls.add('X1');
-                } 
-                break;
-            case cls.contains('Q') :
-                cls.remove('Q');
-                if (gameArray[id].val !== 0) {
-                    var txt = gameArray[id].val;
-                } else {
-                        var txt = "";
-                }
-                
-                document.getElementById(divid).innerHTML = txt;
-                cls.add('H');
-                if (cls.contains("X1")) {
-                    cls.remove('X1');
-                    cls.add('X1');
-                } 
-                break;
+        if(gameArray[id].listen) {
+            // Création variable classList de l'élément
+            let cls = document.getElementById(divid).classList;    
+            // Remplacement des classes
+            switch (true) {
+                case cls.contains('H') :
+                    cls.remove('H');
+                    cls.add('F');
+                    if (cls.contains("X1")) {
+                        cls.remove('X1');
+                        cls.add('X1');
+                    } 
+                    break;
+                case cls.contains('S') : 
+                    break;
+                case cls.contains('F') :
+                    cls.remove('F');
+                    cls.add('Q');
+                    document.getElementById(divid).innerHTML = "?"; 
+                    break;
+                case cls.contains('Q') :
+                    cls.remove('Q');
+                    cls.add('H');
+                    if (gameArray[id].val !== 0) {
+                        var txt = gameArray[id].val;
+                    } else {
+                            var txt = "";
+                    }                    
+                    document.getElementById(divid).innerHTML = txt;                    
+                    break;
+            }
         }
-    });
-
+    });   
 }
 
+
 function removeZeros(idx) {
-
     var filtsurr = getSurrounderIndex(idx)
-
     for (let i = 0; i < filtsurr.length; i++) {
-
-        if (gameArray[filtsurr[i]].status !== 'S' && gameArray[filtsurr[i]].val == 0) {
-            
-            gameArray[filtsurr[i]].status = 'S';
-            
-            let divid = 'id' + gameArray[filtsurr[i]].ref
-            
+        if (gameArray[filtsurr[i]].status !== 'S' && gameArray[filtsurr[i]].val == 0) {            
+            gameArray[filtsurr[i]].status = 'S';            
+            let divid = 'id' + gameArray[filtsurr[i]].ref            
             document.getElementById(divid).classList.add('S');
             document.getElementById(divid).classList.remove('H');
             document.getElementById(divid).classList.remove('F');
             document.getElementById(divid).classList.remove('Q');
-            document.getElementById(divid).innerHTML = "";
-            
+            document.getElementById(divid).innerHTML = "";            
             removeZeros(gameArray[filtsurr[i]].ref);
-
-        } else if (gameArray[filtsurr[i]].status !== 'S' && gameArray[filtsurr[i]].val !== undefined) {
-            
-            let divid = 'id' + gameArray[filtsurr[i]].ref
-            
+        } else if (gameArray[filtsurr[i]].status !== 'S' && gameArray[filtsurr[i]].val !== undefined) {            
+            let divid = 'id' + gameArray[filtsurr[i]].ref            
             document.getElementById(divid).classList.add('S');
             document.getElementById(divid).classList.remove('H');
             document.getElementById(divid).classList.remove('F');
@@ -310,7 +293,6 @@ function removeZeros(idx) {
             document.getElementById(divid).innerHTML = gameArray[filtsurr[i]].val
         }
     }
-
 }
 
 
@@ -321,11 +303,9 @@ function removeZeros(idx) {
 
 // Lancement d'une partie via bouton START
 document.getElementById("new").addEventListener("click", function() {
-
             
     // Suppression ancienne grille
-    document.getElementById("game").innerHTML = "";
-    
+    document.getElementById("game").innerHTML = "";    
     
     // Demande taille grille
     cols = prompt('Set colums qty',16);
@@ -334,26 +314,4 @@ document.getElementById("new").addEventListener("click", function() {
  
     // Demande niveau difficulté et chargement grille
     start();
-
-    
-
-       
-
-
-    console.log(bombArray);
-       
-
-
-
-
-
-
-
-
-
-    console.log(gameArray);
-
-    console.log(bombArray);
-
-
 });
