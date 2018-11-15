@@ -41,6 +41,8 @@ var y = 0;
 var gameArray = [];
 var bombArray = [];        
 var bombQty = 0;
+var animArray = []
+
 
 function populateArray (arr, cols, rows) {
     let ref = 0;
@@ -80,7 +82,6 @@ function setBombs(diffRatio) {
         }
     }
     document.getElementById("mCounter").innerHTML = bombQty;
-
 }
 
 
@@ -187,7 +188,7 @@ function start() {
                 injectGrid();      
                 // Exécute fct setGridCSS
                 setGridCSS();   
-                
+                anime();
             };
         });
     }
@@ -197,33 +198,29 @@ function start() {
 function lClick(divid, idx) {    
     let cls = document.getElementById(divid).classList;
     document.getElementById(divid).addEventListener("click", function () { 
-        if(gameArray[idx].listen && !cls.contains('F') && !cls.contains('Q')) {
-            
-            if (gameArray[idx].isBomb) {
-                
-                for (let k = 0; k < bombArray.length ; k++) {
-                    
-                    let divid1 = "id"+ bombArray[k].ref;
-                    
-                    if (divid1 !== divid) {
-
+        if(gameArray[idx].listen && !cls.contains('F') && !cls.contains('Q')) {            
+            if (gameArray[idx].isBomb) {                
+                for (let k = 0; k < bombArray.length ; k++) {                    
+                    let divid1 = "id"+ bombArray[k].ref;                    
+                    if (divid1 !== divid && !document.getElementById(divid1).classList.contains('F')) {
                         document.getElementById(divid1).classList.add('X2');
                         document.getElementById(divid1).classList.remove('H');
                         document.getElementById(divid1).classList.remove('F');
                         document.getElementById(divid1).classList.remove('Q');
-
+                    } else if (divid1 !== divid && document.getElementById(divid1).classList.contains('F')) {
+                        document.getElementById(divid1).classList.add('X4');
+                        document.getElementById(divid1).classList.remove('H');
+                        document.getElementById(divid1).classList.remove('F');
+                        document.getElementById(divid1).classList.remove('Q');
                     }
-                }          
-                
+                }                         
                 cls.add('X3')
                 cls.remove('H');
                 cls.remove('F');
                 cls.remove('Q'); 
-
                 for (let l = 0; l < cells; l++) {
                     gameArray[l].listen = false; 
                 }
-
             } else if (gameArray[idx].val == 0) {
                 let divid = "id" + idx
                 cls.add('S');
@@ -257,21 +254,49 @@ function lClick(divid, idx) {
 
 
 function rClick (divid, id) {
+
     document.getElementById(divid).addEventListener('contextmenu', function() {
+
         if(gameArray[id].listen) {
+
             // Création variable classList de l'élément
-            let cls = document.getElementById(divid).classList;    
+
+            let cls = document.getElementById(divid).classList;   
+
             // Remplacement des classes
+
             switch (true) {
+
                 case cls.contains('H') :
                     cls.remove('H');
                     cls.add('F');
                     bombQty -=1;
                     document.getElementById("mCounter").innerHTML = bombQty;
                     gameArray[id].status = "F";                
+                    
+
+
+                    var testwin = true
+
+                    for (let i = 0; i < bombArray.length; i++) {
+                        if (gameArray[bombArray[i].ref].isBomb && !gameArray[bombArray[i].ref].status == 'F') {
+                            testwin = false
+                        }
+                    }
+
+                    if(bombQty == 0 && testwin) {
+
+                        alert('Good job motherfucker!');
+
+
+                    // WIN HERE    
+
+                    }
                     break;
+
                 case cls.contains('S') : 
                     break;
+
                 case cls.contains('F') :
                     cls.remove('F');
                     cls.add('Q');
@@ -280,15 +305,18 @@ function rClick (divid, id) {
                     gameArray[id].status = "Q";  
                     document.getElementById(divid).innerHTML = "?"; 
                     break;
+
                 case cls.contains('Q') :
                     cls.remove('Q');
                     cls.add('H');
                     gameArray[id].status = "H";  
+
                     if (gameArray[id].val !== 0) {
                         var txt = gameArray[id].val;
                     } else {
                             var txt = "";
                     }                    
+
                     document.getElementById(divid).innerHTML = txt;                    
                     break;
             }
@@ -320,15 +348,29 @@ function removeZeros(idx) {
     }
 }
 
-/*
-function anime() {
-    for (let id = cells; id <= 0 ;id--) {
-        let divid = "id" + id;
-        document.getElementById(divid).classList.add(anim)
-    }
 
+
+function anime() {
+
+    let len = animArray.length;
+    console.log("len = " + len);
+   
+    let id = Math.floor(Math.random()*len)
+    console.log("id = " + id);
+    
+    let divid = "id" + animArray[id];
+
+    animArray.splice(id, 1);
+    console.log(animArray);    
+
+    if (len > 0) {
+        document.getElementById(divid).classList.add('anim');
+        setTimeout (function () {               
+            anime();
+        }, 1);        
+    }     
 }  
-*/
+
 
 //------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------GAME
@@ -344,11 +386,11 @@ document.getElementById("new").addEventListener("click", function() {
     cols = prompt('Set colums qty',16);
     rows = prompt('Set rows qty',16);
     cells = cols*rows;
- 
+    for (let i = 0; i < cells; i++) {
+        animArray.push(i)
+    }
+
     // Demande niveau difficulté et chargement grille
     start();
-
-    console.log(bombArray);
-    console.log(gameArray);
 
 });

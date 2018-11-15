@@ -11,7 +11,6 @@ body {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome and Opera */
-
 }
 
 #game {
@@ -33,10 +32,12 @@ body {
     background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
     text-indent: 100%;
     overflow: hidden;
+    visibility: hidden;
 }
 
-anim {
-    animation: fall 2s linear;
+.anim {
+    animation: fall 0.5s linear;
+    visibility: visible;
 }
 
 .S {
@@ -55,7 +56,7 @@ anim {
 }
 
 .two {
-    color: rgb(10, 100, 10);
+    color: rgb(13, 85, 13);
 }
 
 .three {
@@ -112,6 +113,14 @@ anim {
     animation: explode 1s infinite linear;
 }
 
+.X4 {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-image: radial-gradient(circle at center, black, yellow, transparent 70%);
+    color: rgba(0, 0, 0, 0);
+}
+
 nav {
     display: grid;
     justify-content: center;
@@ -124,6 +133,8 @@ nav {
     flex-direction: row;
     justify-content: center;
     height: 50px; 
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .btn {
