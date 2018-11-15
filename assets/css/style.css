@@ -1,6 +1,10 @@
 body {
     background-attachment: fixed;
+<<<<<<< HEAD
     background-image: url("../img/bg.jpg");
+=======
+    background-image: url(../img/bg.JPG);
+>>>>>>> inprogress
     background-size: 100%;
     background-repeat: no-repeat; 
     /* empêcher sélection texte dans slots */ 
@@ -11,7 +15,6 @@ body {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome and Opera */
-
 }
 
 #game {
@@ -21,12 +24,11 @@ body {
     display: grid;
     align-items: center;
     justify-content: center;
+    justify-items: center;
     position: relative;
     opacity: 0.9;
+    grid-gap: 3px;
 }
-
-
-
 
 .H {
     width: 40px;
@@ -34,8 +36,14 @@ body {
     border: 1px solid rgb(73, 73, 73);
     border-radius: 10px;
     background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
-    color: rgba(0, 0, 0, 0);
+    text-indent: 100%;
+    overflow: hidden;
+    visibility: hidden;
+}
 
+.anim {
+    animation: fall 0.5s linear;
+    visibility: visible;
 }
 
 .S {
@@ -43,20 +51,46 @@ body {
     height: 40px;
     border: 1px solid rgb(61, 61, 61);;
     border-radius: 10px;
-    background-image: radial-gradient(circle at center, rgb(94, 87, 87) 35%, rgb(90, 82, 82));
+    background-image: radial-gradient(circle at center, rgb(110, 100, 100) 35%, rgb(110, 101, 101));
     text-align: center;    
     font-weight: bold;
-    font-size: 30px;
+    font-size: 30px; 
+}
+
+.one {
+    color: rgb(28, 28, 165);
+}
+
+.two {
+    color: rgb(13, 85, 13);
+}
+
+.three {
+    color: rgb(202, 13, 13);
+}
+
+.four {
+    color: rgb(19, 19, 133);
+}
+
+.five {
+    color: rgb(128, 8, 8);
+}
+
+.six {
+    color: rgb(63, 5, 5);
 }
 
 .F {
     width: 40px;
     height: 40px;
     border: 1px solid rgb(73, 73, 73);
-    border-radius: 10px;
+    border-radius: 20px;
     background-image: radial-gradient(circle at center, red 5%, grey );
     color: rgba(0, 0, 0, 0);
-    z-index: 0;
+    animation: flagged 1s infinite linear;
+
+    
 }
 
 .Q {
@@ -69,48 +103,54 @@ body {
     text-align: center; 
     font-weight: bold;
     font-size: 30px;
-
+    animation: rotate 1s infinite linear;
 }
-
-/*.X1 {
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgb(73, 73, 73);
-    border-radius: 10px;
-    background-image: radial-gradient(circle at center, rgb(187, 178, 178) 35%, grey);
-
-}*/
 
 .X2 {
     width: 40px;
     height: 40px;
-    border: 1px solid rgb(73, 73, 73);
-    border-radius: 10px;
-    background-image: radial-gradient(circle at center, black, red);
+    border-radius: 20px;
+    background-image: radial-gradient(circle at center, black, red, transparent 70%);
     color: rgba(0, 0, 0, 0);
+}
 
+.X3 {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    color: rgba(0, 0, 0, 0);
+    animation: explode 0.7s infinite linear;
+    z-index: 2;;
+}
+
+.X4 {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-image: radial-gradient(circle at center, black, yellow, transparent 70%);
+    color: rgba(0, 0, 0, 0);
 }
 
 nav {
-    height: 600px;
-    width: 300px;
-    /*background-color: pink;*/
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    float: right;
-    margin: o;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr, 1fr, 1fr;
+    grid-template-areas: "cnt btn .";
 }
 
 #level { 
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: center; 
     height: 50px; 
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
-#level .btn {
+.btn {
     margin: 0px 20px 0px 20px;
+    border-radius: 10px;
+    grid-area: 'btn';
 }
 
 #new {
@@ -119,22 +159,90 @@ nav {
 
 .cnt {
     align-self: center;
-    border: solid black 1px;
-    width: 100px;
-    height: 100px;
     text-align: center;
-    padding: 10px;
-    margin: 0px;
+    margin: 0 50px;
+    grid-area: 'cnt';
 } 
 
-h2 {
+h3 {
+    font-size: 30px;
     margin-bottom: 0px;
-    background-color: blue;
-
+    background-color: rgb(141, 141, 141);
+    align-self: center;
 }
 
 .cnt  p {
     font-size: 1.5em;
     font-weight: bold;
+    background-color: grey;
+    width: 100px;
+    border: 1px solid rgb(61, 61, 61);;
+    border-radius: 10px;
+}
 
+@keyframes rotate {
+    0% {
+        transform: rotate3d(0);
+    }
+
+    50% {
+        transform: rotate3d(1, 1, 0, 180deg);
+    }
+
+    100% {
+        transform: rotate3d(1, 1, 0, 360deg);
+    }
+}
+
+@keyframes explode {
+    0% {
+        background-image: radial-gradient(circle at center, red, black, transparent 70%);
+        width: 100%;
+        height: 100%;
+    }
+
+    50% {
+        background-image: radial-gradient(circle at center, black, red, transparent 70%);
+        width: 200%;
+        height: 200%;
+    }
+
+    100% {
+        background-image: radial-gradient(circle at center, red, black, transparent 70%);
+        width: 150%;
+        height: 150%;
+    }
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-300px);
+    }
+
+    50% {
+        transform: translateY(-150px) rotate(180deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(360deg);
+    }
+}
+
+@keyframes flagged {
+    0% {
+        width: 100%;
+        height: 100%;
+    }
+    
+    50% {
+        width: 75%;
+        height: 75%;
+        transform: rotate(180deg);
+    }
+
+    100% {
+        width: 100%;
+        height: 100%;
+        transform: rotate(360deg);
+    }
 }
