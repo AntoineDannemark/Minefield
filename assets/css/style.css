@@ -39,7 +39,7 @@ body {
 }
 
 .anim {
-    animation: fall 1.5s ease-out;
+    animation: fall 0.2s linear;
     visibility: visible;
 }
 
@@ -235,13 +235,27 @@ h3 {
     }
 
     50% {
-        transform: translateY(-150px) translateX(-350px) rotate(180deg);
+        transform: translateY(-150px) translateX(-450px) rotate(180deg);
         width: 150%;
         height: 150%;
         box-shadow: 15px 15px 15px yellow;
     }
 
-    100% {
+    90% {
+        transform: translateY(0px) translateX(0px) rotate(324deg);
+        width: 100%;
+        height: 100%;
+        box-shadow: 5px 5px 15px orange;
+    }
+
+    95% {
+        transform: translateY(0px) translateX(0px) rotate(342deg);
+        width: 100%;
+        height: 100%;
+        box-shadow: 1px 1px 15px red;
+    }
+
+    100% { 
         transform: translateY(0px) translateX(0px) rotate(360deg);
         width: 100%;
         height: 100%;
