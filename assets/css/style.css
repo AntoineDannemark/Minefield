@@ -17,6 +17,7 @@ body {
     width: 1200px;
     height: 800px;
     margin: auto;
+    margin-bottom: 50px;
     display: grid;
     align-items: center;
     justify-content: center;
@@ -130,8 +131,10 @@ body {
 nav {
     display: grid;
     justify-content: center;
-    grid-template-columns: 1fr, 1fr, 1fr;
-    grid-template-areas: "cnt btn .";
+    grid-template-columns: 0.5fr, 0.5fr, 1fr, 1fr;
+    grid-template-areas: "cnt txt btn .";
+    margin-bottom: 70px;
+    margin-top: 50px;
 }
 
 #level { 
@@ -156,9 +159,22 @@ nav {
 .cnt {
     align-self: center;
     text-align: center;
-    margin: 0 50px;
+    margin: 0 10px;
     grid-area: 'cnt';
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
 } 
+
+.txt {
+    align-self: center;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    margin-right: 15px;
+    grid-area: 'txt';
+}
 
 h3 {
     font-size: 30px;

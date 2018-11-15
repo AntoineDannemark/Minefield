@@ -162,10 +162,19 @@ function getSurrounderIndex(index) {
     return filtSurr;    
 }
 
+//let div = document.createElement("div");
+//div.id = "level";
 
 function start() {
+    
     gameArray = [];
     bombArray = [];        
+
+    let div = document.createElement("div");
+    let body = document.body;
+    body.appendChild(div);       
+    div.id = "level";
+
     // Injecte les boutons dans la balise level
     document.getElementById("level").innerHTML = levbtns;        
     // Boucle dans l'array de difficulté
@@ -179,7 +188,7 @@ function start() {
                 diffRatio = diffRatioArray[i];
                 bombQty = Math.floor(cells*diffRatio);
                 // Nettoye la balise level
-                document.getElementById("level").innerHTML = "";     
+                document.getElementById("level").remove();
                 // Créer l'array 
                 populateArray(gameArray, cols, rows);
                 // Mettre les mines
