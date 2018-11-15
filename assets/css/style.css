@@ -1,10 +1,6 @@
 body {
     background-attachment: fixed;
-<<<<<<< HEAD
-    background-image: url("../img/bg.jpg");
-=======
     background-image: url(../img/bg.JPG);
->>>>>>> inprogress
     background-size: 100%;
     background-repeat: no-repeat; 
     /* empêcher sélection texte dans slots */ 
