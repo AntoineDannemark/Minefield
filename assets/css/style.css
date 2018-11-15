@@ -18,7 +18,7 @@ body {
     width: 1200px;
     height: 800px;
     margin: auto;
-
+    padding: 15px;
     display: grid;
     align-items: center;
     justify-content: center;
