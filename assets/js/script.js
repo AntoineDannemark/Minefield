@@ -373,7 +373,8 @@ function anime() {
             alt =!alt;            
             setTimeout (function () {               
                 anime();
-            }, (Math.log(lo)*3));
+            }, 1);
+            //}, (Math.log(lo)*1.5));
             lo+=10
         }           
         else {
@@ -381,7 +382,8 @@ function anime() {
             alt =!alt;
             setTimeout (function () {               
                 anime();
-            }, (Math.log(lo)*3));
+            }, 1);
+            //}, (Math.log(lo)*3));
             lo+=10
         }
     }     
@@ -467,11 +469,25 @@ console.log(len);
 
            if (sIdx < len) {
                setTimeout( function() {                 
-                spiral();
-                setTimeout(() => {
-                    document.getElementById(divid).classList.add('hidden');
-                }, 1500);
-               }, 15);
+                    spiral();
+                    setTimeout(function() {
+                        document.getElementById(divid).classList.add('hidden');
+                        document.getElementById(divid).classList.remove('H');
+                        document.getElementById(divid).classList.remove('S');
+                        document.getElementById(divid).classList.remove('F');
+                        document.getElementById(divid).classList.remove('Q');
+                        document.getElementById(divid).classList.remove('X2');
+                        document.getElementById(divid).classList.remove('X3');
+                        document.getElementById(divid).classList.remove('X4');
+                        document.getElementById(divid).classList.remove('animRight');
+                        document.getElementById(divid).classList.remove('animLeft');
+                        document.getElementById(divid).classList.remove('goAway');
+ 
+
+
+          
+                    }, 850);   
+                }, 15);
            } else {
                setTimeout( function() {
                     cleangrid()

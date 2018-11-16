@@ -51,7 +51,7 @@ html {
 }
 
 .goAway {
-    animation: goAway 1s ease-in-out;
+    animation: goAway 1s linear;
 }
 
 .S {
@@ -352,35 +352,35 @@ h3 {
     }
 
     25% {
-        transform: translateY(-75px) translateX(-250px) rotate(359deg);
+        transform: translateY(-250px) translateX(-250px) rotate(359deg);
         width: 150%;
         height: 150%;
         box-shadow: 15px 15px 15px yellow;
-        border-radius: 27.5px;
+        border-radius: 30px;
     }
 
     45% {
-        transform: translateY(-135px) translateX(-450px) rotate(648deg);
+        transform: translateY(-450px) translateX(-450px) rotate(648deg);
         width: 190%;
         height: 190%;
         box-shadow: 5px 5px 15px orange;
-        border-radius: 25.5px;
+        border-radius: 30px;
     }
 
     48% {
-        transform: translateY(-144px) translateX(-480px) rotate(684deg);
+        transform: translateY(-480px) translateX(-480px) rotate(684deg);
         width: 196%;
         height: 196%;
         box-shadow: 1px 1px 15px rgb(255, 0, 212);
-        border-radius: 25.2px
+        border-radius: 30px
     }
 
     100% { 
-        transform: translateY(-300px) translateX(0px) rotate(720deg);
+        transform: translateY(-1000px) translateX(-1000px) rotate(720deg);
         width: 300%;
         height: 300%;
         box-shadow: none;
-        border-radius: 20px;
+        border-radius: 30px;
         visibility: hidden;
     }
 }
