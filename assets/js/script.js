@@ -23,7 +23,7 @@ let diff;       // difficulté de la partie
 let diffRatio;
                 
 const diffArray = ["easy", "medium", "hard"]; // Array choix difficulté
-const diffRatioArray = [0.05, 0.1, 0.2];
+const diffRatioArray = [0.0, 0.1, 0.2];
 
 // Phrases de confirmation lors de la sélection d'un niveau de difficulté
 const cPhrases = ["Difficulty level: EASY\nYou little coward baby!\nStill time to change your mind little pussy!",
@@ -46,8 +46,8 @@ var animArray = []
 
 function populateArray (arr, cols, rows) {
     let ref = 0;
-    for (y = 0; y < cols; y++) {
-        for (x = 0; x < rows; x++) {
+    for (y = 0; y < rows; y++) {
+        for (x = 0; x < cols; x++) {
             arr.push({
                 "x": x,
                 "y": y,
@@ -407,9 +407,16 @@ function anime() {
 }  
 
 
+/*
+let spiralArray = [];
 
+function spiral() {
 
+    for (x = 0, x < cols, x++) {
 
+    }
+
+*/
 
 
 
