@@ -402,102 +402,105 @@ document.getElementById("new").addEventListener("click", function() {
     
     if (testout > 0) {
   
+
+
         // Création array des index 
-let spiralArray = []
-let n = cols - 1;
-let p = rows - 1;
-let sIndex = 0;
-cols = parseInt(cols);
-rows = parseInt(rows);
-let nn = n;
-for (sIndex; sIndex <= n ; sIndex ++) {
-    spiralArray.push(sIndex);
-}
-sIndex -= 1;
-while (nn >= 1) {    
-    for (let z = p; z > 0; z--) {
-        sIndex += cols;
-        spiralArray.push(sIndex);
-    }
-    p -= 1;
-    for (let z = n; z > 0; z--) {
+        let spiralArray = []
+        let n = cols - 1;
+        let p = rows - 1;
+        let sIndex = 0;
+        cols = parseInt(cols);
+        rows = parseInt(rows);
+        let nn = n;
+        for (sIndex; sIndex <= n ; sIndex ++) {
+            spiralArray.push(sIndex);
+        }
         sIndex -= 1;
-        spiralArray.push(sIndex);
-    }
-    n -= 1;
-    for (let z = p; z > 0; z--) {
-        sIndex -= cols;
-        spiralArray.push(sIndex);
-    }
-    p -= 1;
-    for (let z = n; z > 0; z--) {
-        sIndex += 1;
-        spiralArray.push(sIndex);
-    }
-    n -= 1;
-    nn -= 2
-}
-
-
-
-function cleangrid() {
-   
-    document.getElementById("game").innerHTML = "";
-
-}
-
-let proof = 0
-console.log(spiralArray);
-let sIdx = 0;
-let len = spiralArray.length;   
-console.log(len);
-
-       function spiral () {
-           //
- 
-           let divid = "id" + spiralArray[0];   
-           let dividm = "id" + (spiralArray[0] - 1);  
-           spiralArray[0] 
-           
-           console.log(proof)
-           proof++;
-           document.getElementById(divid).classList.add('goAway');
-           
-           spiralArray.shift();
-
-           sIdx++;
-
-           if (sIdx < len) {
-               setTimeout( function() {                 
-                    spiral();
-                    setTimeout(function() {
-                        document.getElementById(divid).classList.add('hidden');
-                        document.getElementById(divid).classList.remove('H');
-                        document.getElementById(divid).classList.remove('S');
-                        document.getElementById(divid).classList.remove('F');
-                        document.getElementById(divid).classList.remove('Q');
-                        document.getElementById(divid).classList.remove('X2');
-                        document.getElementById(divid).classList.remove('X3');
-                        document.getElementById(divid).classList.remove('X4');
-                        document.getElementById(divid).classList.remove('animRight');
-                        document.getElementById(divid).classList.remove('animLeft');
-                        document.getElementById(divid).classList.remove('goAway');
- 
-
-
-          
-                    }, 850);   
-                }, 15);
-           } else {
-               setTimeout( function() {
-                    cleangrid()
-               }, 100);
-           }
+        while (nn >= 1) {    
+            for (let z = p; z > 0; z--) {
+                sIndex += cols;
+                spiralArray.push(sIndex);
+            }
+            p -= 1;
+            for (let z = n; z > 0; z--) {
+                sIndex -= 1;
+                spiralArray.push(sIndex);
+            }
+            n -= 1;
+            for (let z = p; z > 0; z--) {
+                sIndex -= cols;
+                spiralArray.push(sIndex);
+            }
+            p -= 1;
+            for (let z = n; z > 0; z--) {
+                sIndex += 1;
+                spiralArray.push(sIndex);
+            }
+            n -= 1;
+            nn -= 2
         }
 
-   spiral();
+
+
+    function cleangrid() {
+    
+        document.getElementById("game").innerHTML = "";
+
+    }
+
+
+    let proof = 0
+    let sIdx = 0;
+    let len = spiralArray.length;   
+
+
+    function spiral () {
+        //
+
+        let divid = "id" + spiralArray[0];   
+        let dividm = "id" + (spiralArray[0] - 1);  
+        spiralArray[0] 
+        
+
+        proof++;
+        document.getElementById(divid).classList.add('goAway');
+        
+        spiralArray.shift();
+
+        sIdx++;
+
+        if (sIdx < len) {
+            setTimeout( function() {                 
+                spiral();
+                setTimeout(function() {
+                    console.log(divid)
+                    document.getElementById(divid).classList.add('hidden');
+                    document.getElementById(divid).classList.remove('H');
+                    document.getElementById(divid).classList.remove('S');
+                    document.getElementById(divid).classList.remove('F');
+                    document.getElementById(divid).classList.remove('Q');
+                    document.getElementById(divid).classList.remove('X2');
+                    document.getElementById(divid).classList.remove('X3');
+                    document.getElementById(divid).classList.remove('X4');
+                    document.getElementById(divid).classList.remove('animRight');
+                    document.getElementById(divid).classList.remove('animLeft');
+                    document.getElementById(divid).classList.remove('goAway');
+
+
+
+        
+                }, 850);   
+            }, 3);
+        } else {
+            setTimeout( function() {
+                cleangrid()
+            }, 900);
+        }
+    }
+
+    spiral();
    
-   }
+    }
   
     
     // Demande taille grille
