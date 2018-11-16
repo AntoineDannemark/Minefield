@@ -10,9 +10,9 @@ window.onload = function() {
 //------------------------------------------------------------------------------------------------------------------------------------
                                                                                                 // Index Variables globales
 
-let cols;       // nombre de colonnes de la grille
-let rows;       // nombre de lignes de la grille
-let cells;      // nombre de cellules de la grille
+let cols = 0;       // nombre de colonnes de la grille
+let rows = 0;       // nombre de lignes de la grille
+let cells = 0;      // nombre de cellules de la grille
 
 
 let diff;       // difficulté de la partie
@@ -167,7 +167,7 @@ function getSurrounderIndex(index) {
 
 
 function start() {
-    
+
     gameArray = [];
     bombArray = [];        
 
@@ -199,6 +199,7 @@ function start() {
                 // Exécute fct setGridCSS
                 setGridCSS();   
                 anime();
+                
             };
         });
     }
@@ -358,77 +359,130 @@ function removeZeros(idx) {
     }
 }
 
-
-
 var alt = true;
-
 var lo = 10
 
 function anime() {
-
     let len = animArray.length;
-
-    let id = Math.floor(Math.random()*len)
-    
+    let id = Math.floor(Math.random()*len)    
     let divid = "id" + animArray[id];
-
     animArray.splice(id, 1);
-
     if (len > 0) {
-
         if (alt) {
-
             document.getElementById(divid).classList.add('animLeft');
             alt =!alt;            
             setTimeout (function () {               
                 anime();
             }, (Math.log(lo)*3));
-            console.log(lo);
-            console.log(Math.log(lo));
-
             lo+=10
-
-        }
-            
+        }           
         else {
-
             document.getElementById(divid).classList.add('animRight');
             alt =!alt;
             setTimeout (function () {               
                 anime();
             }, (Math.log(lo)*3));
-            console.log(lo);
-            console.log(Math.log(lo));
             lo+=10
-            console.log(lo);
-
         }
     }     
 }  
 
 
-/*
-let spiralArray = [];
-
-function spiral() {
-
-    for (x = 0, x < cols, x++) {
-
-    }
-
-*/
 
 
 
 //------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------GAME
-
+var testout = 0;
 
 // Lancement d'une partie via bouton START
 document.getElementById("new").addEventListener("click", function() {
-            
-    // Suppression ancienne grille
-    document.getElementById("game").innerHTML = "";    
+    
+    if (testout > 0) {
+  
+        // Création array des index 
+let spiralArray = []
+let n = cols - 1;
+let p = rows - 1;
+let sIndex = 0;
+cols = parseInt(cols);
+rows = parseInt(rows);
+let nn = n;
+for (sIndex; sIndex <= n ; sIndex ++) {
+    spiralArray.push(sIndex);
+}
+sIndex -= 1;
+while (nn >= 1) {    
+    for (let z = p; z > 0; z--) {
+        sIndex += cols;
+        spiralArray.push(sIndex);
+    }
+    p -= 1;
+    for (let z = n; z > 0; z--) {
+        sIndex -= 1;
+        spiralArray.push(sIndex);
+    }
+    n -= 1;
+    for (let z = p; z > 0; z--) {
+        sIndex -= cols;
+        spiralArray.push(sIndex);
+    }
+    p -= 1;
+    for (let z = n; z > 0; z--) {
+        sIndex += 1;
+        spiralArray.push(sIndex);
+    }
+    n -= 1;
+    nn -= 2
+}
+
+
+
+function cleangrid() {
+   
+    document.getElementById("game").innerHTML = "";
+
+}
+
+let proof = 0
+console.log(spiralArray);
+let sIdx = 0;
+let len = spiralArray.length;   
+console.log(len);
+
+       function spiral () {
+           //
+ 
+           let divid = "id" + spiralArray[0];   
+           let dividm = "id" + (spiralArray[0] - 1);  
+           spiralArray[0] 
+           
+           console.log(proof)
+           proof++;
+           document.getElementById(divid).classList.add('goAway');
+           
+           spiralArray.shift();
+
+           sIdx++;
+
+           if (sIdx < len) {
+               setTimeout( function() {                 
+                spiral();
+                setTimeout(() => {
+                    document.getElementById(divid).classList.add('hidden');
+                }, 1500);
+               }, 15);
+           } else {
+               setTimeout( function() {
+                    cleangrid()
+               }, 100);
+           }
+        }
+
+   spiral();
+   
+   }
+  
     
     // Demande taille grille
     cols = prompt('Set colums qty',16);
@@ -440,5 +494,7 @@ document.getElementById("new").addEventListener("click", function() {
 
     // Demande niveau difficulté et chargement grille
     start();
+
+    testout +=1 ;
 
 });
