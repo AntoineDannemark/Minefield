@@ -386,5 +386,6 @@ h3 {
 }
 
 .hidden {
-    visibility: hidden;
+    visibility: hide;
+    font-display: none;
 }

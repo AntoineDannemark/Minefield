@@ -55,7 +55,7 @@ function populateArray (arr, cols, rows) {
                 "status": "H",
                 "isBomb": false,
                 "ref": ref,
-                "listen" : true
+                "listen" : false
             });  
             ref++;              
         }    
@@ -197,20 +197,28 @@ function start() {
                 // Exécute fonction InjectGrid
                 injectGrid();      
                 // Exécute fct setGridCSS
-                setGridCSS();   
+                setGridCSS();        
                 anime();
-                
+
             };
         });
     }
 };
 
+function addMouseListening() {
+    for (let i = 0; i < cells; i++) {
+        gameArray[i].listen = true;
+    }  
+}
 
 function lClick(divid, idx) {    
     let cls = document.getElementById(divid).classList;
     document.getElementById(divid).addEventListener("click", function () { 
         if(gameArray[idx].listen && !cls.contains('F') && !cls.contains('Q')) {            
-            if (gameArray[idx].isBomb) {                
+            if (gameArray[idx].isBomb) {  
+                let audio = new Audio();
+                audio.src = "./assets/sounds/explode.wav";
+                audio.play();              
                 for (let k = 0; k < bombArray.length ; k++) {                    
                     let divid1 = "id"+ bombArray[k].ref;                    
                     if (divid1 !== divid && !document.getElementById(divid1).classList.contains('F')) {
@@ -264,7 +272,11 @@ function lClick(divid, idx) {
 }
 
 
+
 function rClick (divid, id) {
+
+    let audio = new Audio();
+    audio.src = "./assets/sounds/flagged.wav";
 
     document.getElementById(divid).addEventListener('contextmenu', function() {
 
@@ -273,7 +285,7 @@ function rClick (divid, id) {
             // Création variable classList de l'élément
 
             let cls = document.getElementById(divid).classList;   
-
+            
             // Remplacement des classes
 
             switch (true) {
@@ -281,6 +293,8 @@ function rClick (divid, id) {
                 case cls.contains('H') :
                     cls.remove('H');
                     cls.add('F');
+
+                    audio.play();
                     bombQty -=1;
                     document.getElementById("mCounter").innerHTML = bombQty;
                     gameArray[id].status = "F";                
@@ -290,8 +304,9 @@ function rClick (divid, id) {
                     var testwin = true
 
                     for (let i = 0; i < bombArray.length; i++) {
-                        if (gameArray[bombArray[i].ref].isBomb && !gameArray[bombArray[i].ref].status == 'F') {
-                            testwin = false
+                        if (gameArray[bombArray[i].ref].isBomb && !(gameArray[bombArray[i].ref].status == 'F')) {
+    
+                            testwin = false;
                         }
                     }
 
@@ -386,7 +401,11 @@ function anime() {
             //}, (Math.log(lo)*3));
             lo+=10
         }
-    }     
+    } else {
+        setTimeout (function() {
+            addMouseListening();
+        }, 1000);            
+    }          
 }  
 
 
@@ -440,6 +459,9 @@ document.getElementById("new").addEventListener("click", function() {
             nn -= 2
         }
 
+        for (let i = 0; i < cells; i++) {
+            gameArray[i].listen = false;
+        }
 
 
     function cleangrid() {
@@ -452,13 +474,14 @@ document.getElementById("new").addEventListener("click", function() {
     let proof = 0
     let sIdx = 0;
     let len = spiralArray.length;   
-
+    let lastdivid = "id" + spiralArray[len-1];  
 
     function spiral () {
         //
 
+
         let divid = "id" + spiralArray[0];   
-        let dividm = "id" + (spiralArray[0] - 1);  
+        let lastdivid = "id" + spiralArray[len-1];  
         spiralArray[0] 
         
 
@@ -467,14 +490,16 @@ document.getElementById("new").addEventListener("click", function() {
         
         spiralArray.shift();
 
+        //document.getElementById(lastdivid).classList.add('X3')
+
         sIdx++;
 
         if (sIdx < len) {
             setTimeout( function() {                 
                 spiral();
                 setTimeout(function() {
-                    console.log(divid)
-                    document.getElementById(divid).classList.add('hidden');
+                    //console.log(divid)
+                    document.getElementById(divid).innerHTML = "";
                     document.getElementById(divid).classList.remove('H');
                     document.getElementById(divid).classList.remove('S');
                     document.getElementById(divid).classList.remove('F');
@@ -482,14 +507,15 @@ document.getElementById("new").addEventListener("click", function() {
                     document.getElementById(divid).classList.remove('X2');
                     document.getElementById(divid).classList.remove('X3');
                     document.getElementById(divid).classList.remove('X4');
+                    document.getElementById(divid).classList.remove('explode');
                     document.getElementById(divid).classList.remove('animRight');
                     document.getElementById(divid).classList.remove('animLeft');
                     document.getElementById(divid).classList.remove('goAway');
-
+                    document.getElementById(divid).classList.add('hidden');
 
 
         
-                }, 850);   
+                }, 900);   
             }, 3);
         } else {
             setTimeout( function() {
