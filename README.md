@@ -9,8 +9,13 @@ This project is deployed on GithubPages at the following adress: https://antoine
 ## Features
 
 A normal minefield game, with three difficulty levels and fully customizable grid size.
-Please note that the code of this project is really inefficient and that the CSS animations 
-are giving a hard time to your browser.
+
+## Bugs
+
+After playing the first game, the level selection menu gets rendered on the bottom of the page.
+
+Also please note that the code of this project is really inefficient and that the CSS animations 
+might give a hard time to your browser.
 
 ## Contributing
 
